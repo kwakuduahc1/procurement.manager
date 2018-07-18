@@ -7,7 +7,7 @@
   "contributors": [
     "https://github.com/kwakuduahc1"
   ],
-  "homepage": "",
+  "homepage": "https://github.com/kwakuduahc1/procurement.manager",
   "keywords": [
     "procurement",
     "procurement manager",
@@ -15,7 +15,7 @@
     "procurement monitoring"
   ],
   "readme": "ReadMe.md",
-  "repository": "https://github.com/kwakuduahc1/ProcuremntManager.git",
+  "repository": "https://github.com/kwakuduahc1/procurement.manager.git",
   "scripts": {
     "test": "karma start ClientApp/test/karma.conf.js"
   },
