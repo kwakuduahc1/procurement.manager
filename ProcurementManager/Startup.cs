@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -53,6 +55,23 @@ namespace ProcurementManager
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+            Task.Run(() => BootStrap());
+        }
+
+        async void BootStrap()
+        {
+            var option = new BrowserWindowOptions
+            {
+                Show = false,
+                Title = "Procurement Managr",
+                Height = 1366,
+                Width = 768
+
+
+            };
+            var mainWindow = await Electron.WindowManager.CreateWindowAsync(option);
+            mainWindow.OnReadyToShow += () => mainWindow.Show();
+
         }
     }
 }
