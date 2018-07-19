@@ -8,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,7 @@ import { HomeComponent } from './components/home/home.component';
     ],
     imports: [
         CommonModule,
-        HttpModule,
+        HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
         ChartsModule,

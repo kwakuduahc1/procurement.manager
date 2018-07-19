@@ -68,7 +68,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClientApp\app\Http\" />
-  </ItemGroup>
 </Project>
