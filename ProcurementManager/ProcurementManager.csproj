@@ -4,6 +4,13 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
+    <PackageId>bstudio.procurement.manager</PackageId>
+    <Authors>Ibrahim Kwaku Duah</Authors>
+    <Company>bStudio</Company>
+    <Product>bStudio Procurement Manager</Product>
+    <PackageIconUrl>../wwwroot/favicon.ico</PackageIconUrl>
+    <ApplicationIcon></ApplicationIcon>
+    <Win32Resource />
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="0.0.9" />
@@ -58,5 +65,8 @@
     <Content Update="electron.manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClientApp\app\Http\" />
   </ItemGroup>
 </Project>

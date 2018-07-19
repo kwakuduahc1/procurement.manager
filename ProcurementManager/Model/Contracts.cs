@@ -12,7 +12,10 @@ namespace ProcurementManager.Model
 
         [StringLength(150, MinimumLength = 20)]
         [Required]
-        public string Contract { get; set; }
+        public string Subject { get; set; }
+
+        [Required]
+        public short MethodsID { get; set; }
 
         [StringLength(200, MinimumLength = 10)]
         [Required]
@@ -26,7 +29,13 @@ namespace ProcurementManager.Model
         public bool IsFlexible { get; set; }
 
         [DefaultValue(false)]
-        public bool IsExecuted{ get; set; }
+        public bool IsApproved { get; set; }
+
+        [Required]
+        public DateTime DateSigned { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsExecuted { get; set; }
 
         [Required]
         public DateTime ExpectedDate { get; set; }
@@ -37,5 +46,7 @@ namespace ProcurementManager.Model
         public byte[] Concurrency { get; set; }
 
         public virtual ICollection<ContractParameters> ContractParameters { get; set; }
+
+        public virtual Methods Methods { get; set; }
     }
 }

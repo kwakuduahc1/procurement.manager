@@ -63,7 +63,7 @@ namespace ProcurementManager
             var option = new BrowserWindowOptions
             {
                 Show = false,
-                Title = "Procurement Managr",
+                Title = "Procurement Manager",
                 Height = 1366,
                 Width = 768
 

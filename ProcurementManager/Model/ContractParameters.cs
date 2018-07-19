@@ -13,7 +13,7 @@ namespace ProcurementManager.Model
         public string ContractParameter { get; set; }
 
         [Required]
-        public short ContractsID { get; set; }
+        public string ContractsID { get; set; }
 
         [Required]
         [Range(1, 100)]
@@ -24,7 +24,7 @@ namespace ProcurementManager.Model
         public double Amount { get; set; }
 
         [DefaultValue(false)]
-        public bool IsComplete { get; set; }
+        public bool IsCompleted { get; set; }
 
         public DateTime ExpectedDate { get; set; }
 
