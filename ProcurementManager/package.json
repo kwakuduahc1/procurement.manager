@@ -81,10 +81,12 @@
   "dependencies": {
     "@angular-devkit/core": "0.0.29",
     "chalk": "^2.1.0",
+    "chart.js": "^2.7.2",
     "circular-dependency-plugin": "^4.3.0",
     "coa": "^1.0.4",
     "electron": "^2.0.2",
     "enhanced-resolve": "^3.4.1",
+    "ng2-charts": "^1.6.0",
     "ngx-quill-editor": "^2.2.2",
     "popper.js": "^1.14.3",
     "printthis": "^0.1.5",
