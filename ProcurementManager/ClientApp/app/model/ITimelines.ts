@@ -1,4 +1,4 @@
-export interface Timelines {
+export interface ITimelines {
     timelinesID: number;
     contractParametersID: number;
     dateDone: Date;

@@ -8,6 +8,7 @@ namespace ProcurementManager.Model
     public class Contracts
     {
         [Key]
+        [StringLength(30, MinimumLength = 10)]
         public string ContractsID { get; set; }
 
         [StringLength(150, MinimumLength = 20)]
@@ -35,7 +36,7 @@ namespace ProcurementManager.Model
         public DateTime DateSigned { get; set; }
 
         [DefaultValue(false)]
-        public bool IsExecuted { get; set; }
+        public bool IsCompleted{ get; set; }
 
         [Required]
         public DateTime ExpectedDate { get; set; }

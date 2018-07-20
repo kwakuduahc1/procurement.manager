@@ -18,5 +18,7 @@ namespace ProcurementManager.Model
 
         [Timestamp]
         public byte[] Concurrency { get; set; }
+
+        public virtual ContractParameters ContractParameters { get; set; }
     }
 }

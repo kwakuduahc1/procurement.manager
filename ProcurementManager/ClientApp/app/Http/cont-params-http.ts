@@ -6,12 +6,16 @@ import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class ConParamsHttp implements IHttpMethods<IContractParameters>{
+    list(): Observable<IContractParameters[]> {
+        throw new Error("Method not implemented.");
+    }
+
     find(id: string | number): Observable<IContractParameters> {
         return this.http.get<IContractParameters>(`/Contracts/Find?id=${id}`);
     }
 
-    list(): Observable<IContractParameters[]> {
-        return this.http.get<IContractParameters[]>('/Contracts/List');
+    conList(id: string): Observable<IContractParameters[]> {
+        return this.http.get<IContractParameters[]>(`/Contracts/List?id=${id}`);
     }
 
     add(item: IContractParameters): Observable<IContractParameters> {

@@ -6,11 +6,12 @@ namespace ProcurementManager.Model
 {
     public class ContractParameters
     {
+        [Key]
         public short ContractParametersID { get; set; }
 
         [Required]
         [StringLength(150, MinimumLength = 10)]
-        public string ContractParameter { get; set; }
+        public int ContractParameter { get; set; }
 
         [Required]
         public string ContractsID { get; set; }
