@@ -1,6 +1,6 @@
 import { IContracts } from "./IContracts";
 
-export interface Methods {
+export interface IMethods {
     methodsID: number;
     method: string;
     concurrency: any[];

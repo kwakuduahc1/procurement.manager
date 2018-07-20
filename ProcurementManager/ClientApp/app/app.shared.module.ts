@@ -13,13 +13,20 @@ import { ContractsComponent } from './components/Contracts/contracts/contracts.c
 import { ContractsHttpService } from './Http/contracts-http';
 import { TimeLinesHttpService } from './Http/time-lines-http';
 import { ConParamsHttp } from './Http/cont-params-http';
+import { EditContractComponent } from './components/Contracts/edit-contract/edit-contract.component';
+import { ContractsListComponent } from './components/Contracts/contracts-list/contracts-list.component';
+import { ContractsResolver } from './resolvers/contracts/ContractsResolver';
+import { MethodsHttpService } from './Http/methods-http';
+import { MethodsResolver } from './resolvers/methods/MethodsResolver';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,
         HomeComponent,
-        ContractsComponent
+        ContractsComponent,
+        EditContractComponent,
+        ContractsListComponent
     ],
     imports: [
         CommonModule,
@@ -30,14 +37,17 @@ import { ConParamsHttp } from './Http/cont-params-http';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'contracts', component: ContractsComponent },
+            { path: 'contracts', component: ContractsComponent, resolve: { contracts: ContractsResolver, methods: MethodsResolver } },
             { path: '**', redirectTo: 'home' }
         ])
     ],
     providers: [
         ContractsHttpService,
         TimeLinesHttpService,
-        ConParamsHttp
+        ConParamsHttp,
+        ContractsResolver,
+        MethodsHttpService,
+        MethodsResolver
     ]
 })
 export class AppModuleShared {

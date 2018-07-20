@@ -1,1 +1,103 @@
-﻿<div style="border: 1px solid red">contracts Component</div>
+﻿<meta name="description" content="Manage your contracts. Add new or edit old ones" />
+<title>Manage Contracts</title>
+<h1 class="h1">Manage Contracts</h1>
+<form class="" [formGroup]="form" name="form" id="form" (submit)="add(form.value)">
+    <fieldset>
+        <legend>Add new contract</legend>
+        <!-- Contract Subject -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" aria-label="" for="subject">Subject</label>
+            <div class="col-md-6" aria-labelledby="subject" [ngClass]="form.controls.subject?.errors ? 'has-error' : 'has-success'">
+                <input type="text"
+                       class="form-control"
+                       id="subject"
+                       title="subject of the contract"
+                       formControlName="subject"
+                       placeholder="Contract subject">
+            </div>
+            <span [ngClass]="form.controls.subject.errors?.maxlength ? 'text-danger' : ''" *ngIf="form.controls.subject.errors?.maxlength">The maximum length is {{form.controls.subject.errors.maxlength.requiredLength}} characters: Current is {{form.controls.subject.errors.maxlength.actualLength}}</span>
+            <span [ngClass]="form.controls.subject.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.subject.errors?.required">Enter subject</span>
+            <span [ngClass]="form.controls.subject.errors?.minlength ? 'text-danger' : ''" *ngIf="form.controls.subject.errors?.minlength">The minimum length is {{form.controls.subject.errors.minlength.requiredLength}} characters: Current is {{form.controls.subject.errors.minlength.actualLength}}</span>
+        </div>
+
+        <!-- Contractor -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="contractor" aria-label="Contractor">Contractor</label>
+            <div class="col-md-6" aria-labelledby="contractor" [ngClass]="form.controls.contractor?.errors ? 'has-error' : 'has-success'">
+                <input type="text"
+                       class="form-control"
+                       id="contractor"
+                       title="Name of contractor"
+                       formControlName="contractor"
+                       placeholder="Name of contractor">
+            </div>
+            <span [ngClass]="form.controls.contractor.errors?.maxlength ? 'text-danger' : ''" *ngIf="form.controls.contractor.errors?.maxlength">The maximum length is {{form.controls.contractor.errors.maxlength.requiredLength}} characters: Current is {{form.controls.contractor.errors.maxlength.actualLength}}</span>
+            <span [ngClass]="form.controls.contractor.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.contractor.errors?.required">Add name of contractor</span>
+            <span [ngClass]="form.controls.contractor.errors?.minlength ? 'text-danger' : ''" *ngIf="form.controls.contractor.errors?.minlength">The minimum length is {{form.controls.contractor.errors.minlength.requiredLength}} characters: Current is {{form.controls.contractor.errors.minlength.actualLength}}</span>
+        </div>
+
+        <!-- Contract sum -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="amount" aria-label="Contract sum">Contract sum</label>
+            <div class="col-md-6" aria-labelledby="amount" [ngClass]="form.controls.amount?.errors ? 'has-error' : 'has-success'">
+                <input type="number"
+                       class="form-control"
+                       id="amount"
+                       title="Contract amount"
+                       formControlName="amount"
+                       placeholder="Total contract sum">
+            </div>
+            <span [ngClass]="form.controls.amount.errors?.max ? 'text-danger' : ''" *ngIf="form.controls.amount.errors?.max">The maximum length is {{form.controls.amount.errors.max.max}}</span>
+            <span [ngClass]="form.controls.amount.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.amount.errors?.required">Add total amount</span>
+            <span [ngClass]="form.controls.amount.errors?.min ? 'text-danger' : ''" *ngIf="form.controls.amount.errors?.min">The minimum is {{form.controls.amount.errors.min.min}}</span>
+        </div>
+
+        <!-- Contract Method -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="methodsID" aria-label="Procurement method">Procurement Method</label>
+            <div class="col-md-6" aria-labelledby="methodsID" [ngClass]="form.controls.methodsID?.errors ? 'has-error' : 'has-success'">
+                <select class="form-control"
+                        id="methodsID"
+                        title="Contract method"
+                        formControlName="methodsID">
+                    <option *ngFor="let m of methods" [ngValue]="m.methodsID" class="dropdown-item" [label]="m.method"></option>
+                </select>
+            </div>
+            <span [ngClass]="form.controls.methodsID.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.methodsID.errors?.required">Select a method</span>
+        </div>
+
+        <!-- Expected Contract Date -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="expectedDate" aria-label="Completion Date">Completion Date</label>
+            <div class="col-md-6" aria-labelledby="expectedDate" [ngClass]="form.controls.expectedDate?.errors ? 'has-error' : 'has-success'">
+                <input type="date"
+                       class="form-control"
+                       id="expectedDate"
+                       title="Expected date of completion"
+                       formControlName="expectedDate"
+                       placeholder="Total contract sum">
+            </div>
+            <span [ngClass]="form.controls.expectedDate.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.expectedDate.errors?.required">Expected date is required</span>
+        </div>
+
+        <!-- Date contract signed-->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="dateSigned" aria-label="Signed date">Date signed</label>
+            <div class="col-md-6" aria-labelledby="dateSigned" [ngClass]="form.controls.dateSigned?.errors ? 'has-error' : 'has-success'">
+                <input type="date"
+                       class="form-control"
+                       id="dateSigned"
+                       title="date contract was signed"
+                       formControlName="dateSigned"
+                       placeholder="date contract signed">
+            </div>
+            <span [ngClass]="form.controls.dateSigned.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.dateSigned.errors?.required">Date signed is required</span>
+        </div>
+
+        <!-- Submit button -->
+        <div class="offset-md-2 btn-group">
+            <button [disabled]="form.invalid || processing" type="submit" [ngClass]="form.invalid ? 'btn-danger' : 'btn-success'" class="btn"><span class="glyphicon glyphicon-addition-sign"> Add Contract</span></button>
+        </div>
+        <div [ngClass]="error ? 'alert-danger' : 'alert-info'">{{message}}</div>
+    </fieldset>
+</form>
