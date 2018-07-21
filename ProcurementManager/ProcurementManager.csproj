@@ -57,9 +57,17 @@
     </ItemGroup>
   </Target>
   <ItemGroup>
+    <None Remove="ClientApp\dist\chartJs.js" />
+    <None Remove="ClientApp\dist\chartJs.js.map" />
     <None Remove="ClientApp\dist\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClientApp\dist\chartJs.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\dist\chartJs.js.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="ClientApp\dist\favicon.ico">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
