@@ -22,6 +22,8 @@ import { FindContractResolver } from './resolvers/contracts/FindContractResolver
 import { ViewContractComponent } from './components/Contracts/view-contract/view-contract.component';
 import { StatusesComponent } from './components/Contracts/statuses/statuses.component';
 import { StatusesResolver } from './resolvers/contracts/StatusesResolver';
+import { ReportsHomeComponent } from './components/reports/reports-home/reports-home.component';
+import { MonthlyReportComponent } from './components/reports/monthly-report/monthly-report.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +34,9 @@ import { StatusesResolver } from './resolvers/contracts/StatusesResolver';
         EditContractComponent,
         ContractsListComponent,
         ViewContractComponent,
-        StatusesComponent
+        StatusesComponent,
+        ReportsHomeComponent,
+        MonthlyReportComponent
     ],
     imports: [
         CommonModule,
@@ -47,6 +51,10 @@ import { StatusesResolver } from './resolvers/contracts/StatusesResolver';
             { path: 'contracts', component: ContractsListComponent, resolve: { contracts: ContractsResolver } },
             { path: 'edit-contract/:id', component: EditContractComponent, resolve: { contract: FindContractResolver, methods: MethodsResolver } },
             { path: 'view-contract/:id', component: ViewContractComponent, resolve: { contract: FindContractResolver } },
+            {
+                path: 'reports-home', component: ReportsHomeComponent, children: [
+                    { path: 'monthly', component: MonthlyReportComponent }]
+            },
             { path: '**', redirectTo: 'home' }
         ])
     ],

@@ -29,6 +29,8 @@ namespace ProcurementManager.Model
 
         public DateTime ExpectedDate { get; set; }
 
+        public DateTime DateCompleted { get; set; }
+
         [Timestamp]
         public byte[] Concurrency { get; set; }
 

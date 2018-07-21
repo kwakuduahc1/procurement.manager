@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProcurementManager.Migrations
 {
-    public partial class Cascader : Migration
+    public partial class Completion : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,7 +35,8 @@ namespace ProcurementManager.Migrations
                     DateSigned = table.Column<DateTime>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
                     ExpectedDate = table.Column<DateTime>(nullable: false),
-                    DateAdded = table.Column<DateTime>(nullable: false),
+                    DateAdded = table.Column<DateTime>(nullable: false, defaultValue:DateTime.Now),
+                    DateCompleted = table.Column<DateTime>(nullable: false),
                     Concurrency = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
@@ -55,7 +56,7 @@ namespace ProcurementManager.Migrations
                 {
                     ContractParametersID = table.Column<short>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ContractParameter = table.Column<int>(maxLength: 150, nullable: false),
+                    ContractParameter = table.Column<string>(maxLength: 150, nullable: false),
                     ContractsID = table.Column<string>(nullable: false),
                     Percentage = table.Column<byte>(nullable: false),
                     Amount = table.Column<double>(nullable: false),

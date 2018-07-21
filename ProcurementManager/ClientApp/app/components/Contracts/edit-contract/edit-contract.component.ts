@@ -76,6 +76,7 @@ export class EditContractComponent {
             expectedDate: ["", Validators.compose([Validators.required])],
             contractsID: new FormControl({ value: this.contract.contractsID, disabled: true }, Validators.required),
             contractParametersID: new FormControl({ value: 0, disabled: true }, Validators.required),
+            concurrency:[""]
         }));
     }
 

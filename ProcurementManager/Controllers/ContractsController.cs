@@ -94,7 +94,8 @@ namespace ProcurementManager.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { Error = "Invalid data was submitted", Message = ModelState.Values.First(x => x.Errors.Count > 0).Errors.Select(t => t.ErrorMessage).First() });
             contract.IsCompleted = true;
-            contract.ContractParameters.ToList().ForEach(x => x.IsCompleted = true);
+            contract.ContractParameters.ToList().ForEach(x => { x.IsCompleted = true; x.DateCompleted = DateTime.Now.Date; });
+            contract.DateCompleted = DateTime.Now;
             using (var db = new ApplicationDbContext(dco))
             {
                 db.Entry(contract).State = EntityState.Modified;

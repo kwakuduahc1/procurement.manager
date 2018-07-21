@@ -9,8 +9,8 @@ using ProcurementManager.Context;
 namespace ProcurementManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180719171950_Cascader")]
-    partial class Cascader
+    [Migration("20180721195854_ParamCompletion")]
+    partial class ParamCompletion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,11 +29,14 @@ namespace ProcurementManager.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<int>("ContractParameter")
+                    b.Property<string>("ContractParameter")
+                        .IsRequired()
                         .HasMaxLength(150);
 
                     b.Property<string>("ContractsID")
                         .IsRequired();
+
+                    b.Property<DateTime>("DateCompleted");
 
                     b.Property<DateTime>("ExpectedDate");
 
@@ -65,6 +68,8 @@ namespace ProcurementManager.Migrations
                         .HasMaxLength(200);
 
                     b.Property<DateTime>("DateAdded");
+
+                    b.Property<DateTime>("DateCompleted");
 
                     b.Property<DateTime>("DateSigned");
 

@@ -69,7 +69,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClientApp\app\components\reports\" />
-  </ItemGroup>
 </Project>

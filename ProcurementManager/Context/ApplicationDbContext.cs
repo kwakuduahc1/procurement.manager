@@ -23,6 +23,7 @@ namespace ProcurementManager.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+           
             builder.Entity<Methods>(x => x.HasData(
                 new Methods { Method = "National Competitive Tendering", MethodsID = 1 },
                 new Methods { Method = "Sole Sourcing", MethodsID = 2 },

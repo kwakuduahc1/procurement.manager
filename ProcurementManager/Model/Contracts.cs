@@ -43,6 +43,8 @@ namespace ProcurementManager.Model
 
         public DateTime DateAdded { get; set; }
 
+        public DateTime DateCompleted { get; set; }
+
         [Timestamp, ConcurrencyCheck]
         public byte[] Concurrency { get; set; }
 
