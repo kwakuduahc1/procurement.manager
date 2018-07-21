@@ -24,6 +24,7 @@ import { StatusesComponent } from './components/Contracts/statuses/statuses.comp
 import { StatusesResolver } from './resolvers/contracts/StatusesResolver';
 import { ReportsHomeComponent } from './components/reports/reports-home/reports-home.component';
 import { MonthlyReportComponent } from './components/reports/monthly-report/monthly-report.component';
+import { PrintProviderService } from './provider/print-provider.service';
 
 @NgModule({
     declarations: [
@@ -66,7 +67,8 @@ import { MonthlyReportComponent } from './components/reports/monthly-report/mont
         MethodsHttpService,
         MethodsResolver,
         FindContractResolver,
-        StatusesResolver
+        StatusesResolver,
+        PrintProviderService
     ]
 })
 export class AppModuleShared {

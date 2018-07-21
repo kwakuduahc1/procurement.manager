@@ -5,6 +5,7 @@ import { ConParamsHttp } from '../../../Http/cont-params-http';
 import { IHttpHelper } from '../../../model/HttpHelper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IContracts } from '../../../model/IContracts';
+import { PrintProviderService } from '../../../provider/print-provider.service';
 
 @Component({
     selector: 'bs-view-contract',
@@ -17,7 +18,7 @@ export class ViewContractComponent implements IHttpHelper<IContractParameters> {
     error: boolean = false;
     message: string = "";
     contract: IContracts;
-    constructor(private http: ConParamsHttp, route: ActivatedRoute) {
+    constructor(private http: ConParamsHttp, route: ActivatedRoute, private printer:PrintProviderService) {
         this.contract = route.snapshot.data['contract']
     }
 
@@ -30,6 +31,9 @@ export class ViewContractComponent implements IHttpHelper<IContractParameters> {
         this.processing = false;
     }
 
+    print() {
+        this.printer.print(this.contract.subject);
+    }
     onError(err: HttpErrorResponse): void {
         if (err.error!.message) {
             this.message = err.error.message;
