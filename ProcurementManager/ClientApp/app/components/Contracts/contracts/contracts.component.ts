@@ -46,7 +46,7 @@ export class ContractsComponent implements IHttpHelper<IContracts> {
                 this.message = err.error!.message;
                 break;
             default:
-                this.message = "An unhandled error occurred. Contact support";
+                this.message = "An unexpected error occurred. Contact support";
                 break;
 
         }

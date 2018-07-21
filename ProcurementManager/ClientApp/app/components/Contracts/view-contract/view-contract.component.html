@@ -21,7 +21,10 @@
     </div>
     <a class="card-link btn btn-primary" [routerLink]="['/edit-contract',contract.contractsID]">Edit</a>
 </div>
-<h2 class="h2">Contract parameters</h2>
+<div class="row" [hidden]="!error">
+    <h6 class="h6">Status Messages</h6>
+    <span class="alert" [ngClass]="error ? 'alert-warning' : 'alert-info'">{{message}}</span>
+</div><h2 class="h2">Contract parameters</h2>
 <table class="table table-striped table-borderless">
     <thead class="thead-dark">
         <tr>
@@ -29,6 +32,8 @@
             <th>Percentage</th>
             <th>Amount</th>
             <th>Expected Date</th>
+            <th>Status</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -37,6 +42,10 @@
             <td>{{p.percentage}}</td>
             <td>{{p.amount}}</td>
             <td>{{p.expectedDate |date}}</td>
+            <td><span class="btn disabled" [ngClass]="p.isCompleted ? 'btn-success' : 'btn-warning'">{{p.isCompleted ? 'Completed' : 'On-going'}}</span></td>
+            <td>
+                <button [disabled]="p.isCompleted" class="btn btn-outline-success" (click)="complete(p)">Mark as done</button>
+            </td>
         </tr>
     </tbody>
 </table>

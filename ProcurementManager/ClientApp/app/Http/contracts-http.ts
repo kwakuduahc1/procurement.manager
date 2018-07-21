@@ -3,6 +3,7 @@ import { IHttpMethods } from "./IHttpMethods";
 import { IContracts } from "../model/IContracts";
 import { Observable } from "rxjs/Observable";
 import { HttpClient } from "@angular/common/http";
+import { IStatuses } from "../model/IStatuses";
 
 @Injectable()
 export class ContractsHttpService implements IHttpMethods<IContracts> {
@@ -12,6 +13,10 @@ export class ContractsHttpService implements IHttpMethods<IContracts> {
 
     list(): Observable<IContracts[]> {
         return this.http.get<IContracts[]>('/Contracts/List');
+    }
+
+    statuses(): Observable<IStatuses[]> {
+        return this.http.get<IStatuses[]>('/Contracts/Statuses');
     }
 
     add(item: IContracts): Observable<IContracts> {
@@ -26,6 +31,9 @@ export class ContractsHttpService implements IHttpMethods<IContracts> {
         return this.http.post<void>("/Contracts/Delete", item);
     }
 
+    close(item: IContracts): Observable<void> {
+        return this.http.put<void>("/Contracts/Close", item);
+    }
     constructor(private http: HttpClient) {
 
     }

@@ -11,23 +11,24 @@ export class ConParamsHttp implements IHttpMethods<IContractParameters>{
     }
 
     find(id: string | number): Observable<IContractParameters> {
-        return this.http.get<IContractParameters>(`/Contracts/Find?id=${id}`);
+        throw new Error("Method not implemented.");
+        //return this.http.get<IContractParameters>(`/Parameters/Find?id=${id}`);
     }
 
     conList(id: string): Observable<IContractParameters[]> {
-        return this.http.get<IContractParameters[]>(`/Contracts/List?id=${id}`);
+        throw new Error("Method not implemented.");//  return this.http.get<IContractParameters[]>(`/Parameters/List?id=${id}`);
     }
 
     add(item: IContractParameters): Observable<IContractParameters> {
-        return this.http.post<IContractParameters>("/Contracts/Create", item);
+        throw new Error("Method not implemented.");// return this.http.post<IContractParameters>("/Parameters/Create", item);
     }
 
     edit(item: IContractParameters): Observable<IContractParameters> {
-        return this.http.post<IContractParameters>("/Contracts/Edit", item);
+        return this.http.put<IContractParameters>("/Parameters/Edit", item);
     }
 
     delete(item: IContractParameters): Observable<void> {
-        return this.http.post<void>("/Contracts/Delete", item);
+        throw new Error("Method not implemented.");//  return this.http.post<void>("/Parameters/Delete", item);
     }
     constructor(private http: HttpClient) {
 

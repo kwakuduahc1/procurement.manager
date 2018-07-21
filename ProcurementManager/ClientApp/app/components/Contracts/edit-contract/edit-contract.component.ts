@@ -1,8 +1,8 @@
 ﻿import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { IContracts } from '../../../model/IContracts';
 import { ContractsHttpService } from '../../../Http/contracts-http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IMethods } from '../../../model/IMethods';
 import { IHttpHelper } from '../../../model/HttpHelper';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -23,7 +23,7 @@ export class EditContractComponent {
     form: FormGroup;
     methods: IMethods[];
     contract: IContracts;
-    constructor(private http: ContractsHttpService, fb: FormBuilder, route: ActivatedRoute) {
+    constructor(private router:Router, private http: ContractsHttpService, fb: FormBuilder, route: ActivatedRoute) {
         this.methods = route.snapshot.data['methods'];
         this.contract = route.snapshot.data['contract'];
         this.form = fb.group({
@@ -41,10 +41,10 @@ export class EditContractComponent {
                 contractParameter: [x.contractParameter, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(150)])],
                 percentage: [x.percentage, Validators.compose([Validators.required, Validators.min(1), Validators.max(100)])],
                 amount: [x.amount, Validators.compose([Validators.required, Validators.min(1)])],
-                contractsID: [this.contract.contractsID],
-                contractParametersID: [x.contractParametersID],
-                concurrency: [x.concurrency],
-                expectedDate: [DateTime.fromSQL(x.expectedDate.toString()).toJSDate(), Validators.compose([Validators.required])]
+                contractsID: new FormControl({ value: x.contractsID, disabled: true }, Validators.required),
+                contractParametersID: new FormControl({ value: x.contractParametersID, disabled: true }, Validators.required),
+                concurrency: new FormControl({ value: x.concurrency, disabled: true }),
+                expectedDate: [x.expectedDate, Validators.compose([Validators.required])]
             }))
         });
     }
@@ -73,7 +73,9 @@ export class EditContractComponent {
             contractParameter: ["", Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(150)])],
             percentage: ["", Validators.compose([Validators.required, Validators.min(1), Validators.max(100)])],
             amount: ["", Validators.compose([Validators.required, Validators.min(1)])],
-            expectedDate: ["", Validators.compose([Validators.required])]
+            expectedDate: ["", Validators.compose([Validators.required])],
+            contractsID: new FormControl({ value: this.contract.contractsID, disabled: true }, Validators.required),
+            contractParametersID: new FormControl({ value: 0, disabled: true }, Validators.required),
         }));
     }
 
@@ -83,10 +85,7 @@ export class EditContractComponent {
     }
 
     onSuccess(t: IContracts) {
-        this.error = false;
-        this.message = "Contract saved";
-        this.form.reset();
-        this.params.forEach(x => x.reset());
+       this.router.navigate(['/contracts'])
     }
 
     add(con: IContracts, fgs: FormGroup[]) {
@@ -94,13 +93,14 @@ export class EditContractComponent {
         this.error = false;
         let params: IContractParameters[] = [];
         fgs.forEach(x => params.unshift({
+            contractsID: this.contract.contractsID,
+            contractParametersID: x.controls['contractParametersID'].value,
             amount: x.controls['amount'].value,
             contractParameter: x.controls['contractParameter'].value,
             expectedDate: x.controls['expectedDate'].value,
             isCompleted: false,
             percentage: x.controls['percentage'].value
         } as IContractParameters));
-        console.log(params);
         con.contractParameters = params;
         this.http.edit(con).subscribe(res => this.onSuccess(res), (err: HttpErrorResponse) => this.onError(err));
         this.processing = false;

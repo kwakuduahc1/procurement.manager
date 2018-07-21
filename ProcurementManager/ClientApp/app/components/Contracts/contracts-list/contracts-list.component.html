@@ -3,8 +3,8 @@
 <h1 class="h1 text-md-center">List of contracts</h1>
 <div class="row">
     <div class="card col-md-4" *ngFor="let c of contracts">
-        <div class="card-header">{{c.subject}} <a class="float-right" [routerLink]="['/edit-contract',c.contractsID]">Edit</a></div>
-        <div class="card-body">
+        <div class="card-header">{{c.subject}}<span class="badge">{{(c.percentage/100) |percent}}</span> <a class="float-right" [routerLink]="['/edit-contract',c.contractsID]">Edit</a></div>
+        <div class="card-body" [routerLink]="['/view-contract',c.contractsID]">
             <div class="card-text row">
                 <div class="col-md-4">Contractor</div>
                 <div class="col-md-6">{{c.contractor}}</div>
@@ -22,6 +22,11 @@
                 <div class="col-md-6">{{c.dateSigned |date}}</div>
             </div>
         </div>
-        <a class="card-link btn btn-primary" [routerLink]="['/view-contract',c.contractsID]">View details</a>
+        <div class="btn-group">
+            <button class="card-link btn btn-primary" [routerLink]="['/view-contract',c.contractsID]">View details</button>
+            <button class="btn btn-outline-success" (click)="close(c)">Close Contract</button>
+            <button class="btn btn-danger" (click)="delete(c)">Delete Contract</button>
+        </div>
     </div>
 </div>
+<div class="row alert" [ngClass]="error ? 'alert-danger' : 'alert-info'">{{message}}</div>

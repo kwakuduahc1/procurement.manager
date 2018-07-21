@@ -70,7 +70,7 @@
         <div class="form-group row">
             <label class="col-md-2 col-form-label" for="expectedDate" aria-label="Completion Date">Completion Date</label>
             <div class="col-md-6" aria-labelledby="expectedDate" [ngClass]="form.controls.expectedDate?.errors ? 'has-error' : 'has-success'">
-                <input type="text"
+                <input type="date"
                        class="form-control"
                        id="expectedDate"
                        title="Expected date of completion"
@@ -103,6 +103,33 @@
 <form class="border" [hidden]="form.invalid" [ngClass]="f.valid ? 'border-success' : 'border-danger'" name="params_form" [formGroup]="f" id="params_form{{ix}}" *ngFor="let f of params;let ix= index">
     <fieldset>
         <legend>Contract parameter {{ix+1}}</legend>
+        <!-- IDs -->
+        <div hidden>
+            <div class="form-group form-row">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="parID{{ix}}">CID</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="parameter id" aria-label="parameter name" aria-describedby="" formControlName="contractsID">
+                </div>
+            </div>
+            <div class="form-group form-row">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="con_parID{{ix}}">Param ID</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="parameter id" aria-label="parameter name" aria-describedby="" formControlName="contractParametersID">
+                </div>
+            </div>
+            <div class="form-group form-row">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="concur{{ix}}">Concurrency</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="parameter id" aria-label="parameter name" aria-describedby="" formControlName="concurrency">
+                </div>
+            </div>
+        </div>
         <!-- Contract parameter description {{ix}} -->
         <div class="form-group row">
             <label class="col-md-2 col-form-label" aria-label="contractParameter" for="contractParameter">Parameter</label>
@@ -177,6 +204,6 @@
 <br />
 <br /><!-- Submit button -->
 <div class="row offset-md-2 btn-group">
-    <button (click)="add(form.value,params)" [disabled]="!areFormsvalid() || processing || !checkPercentage() || !checkSum()" type="submit" [ngClass]="!areFormsvalid() ? 'btn-danger' : 'btn-success'" class="btn"><span class="glyphicon glyphicon-addition-sign"> Add Contract</span></button>
+    <button (click)="add(form.value,params)" [disabled]="!areFormsvalid() || processing || !checkPercentage() || !checkSum()" type="submit" [ngClass]="!areFormsvalid() ? 'btn-danger' : 'btn-success'" class="btn"><span class="glyphicon glyphicon-addition-sign"> Edit Contract</span></button>
 </div>
 <div class="alert" [ngClass]="error ? 'alert-danger' : 'alert-info'">{{message}}</div>

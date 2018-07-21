@@ -16,4 +16,5 @@ export interface IContracts {
     concurrency: any[];
     contractParameters: IContractParameters[];
     count: number;
+    percentage: number;
 }

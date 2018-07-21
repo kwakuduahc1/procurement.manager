@@ -1,10 +1,1 @@
-<h1 class="h1 text-lg-center">Projects statuses</h1>
-<div style="">
-    <canvas baseChart
-            [data]="polarAreaChartData"
-            [labels]="polarAreaChartLabels"
-            [legend]="polarAreaLegend"
-            [chartType]="polarAreaChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-</div>
+<bs-statuses [statuses]="statuses"></bs-statuses>

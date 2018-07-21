@@ -20,6 +20,8 @@ import { MethodsHttpService } from './Http/methods-http';
 import { MethodsResolver } from './resolvers/methods/MethodsResolver';
 import { FindContractResolver } from './resolvers/contracts/FindContractResolver';
 import { ViewContractComponent } from './components/Contracts/view-contract/view-contract.component';
+import { StatusesComponent } from './components/Contracts/statuses/statuses.component';
+import { StatusesResolver } from './resolvers/contracts/StatusesResolver';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,8 @@ import { ViewContractComponent } from './components/Contracts/view-contract/view
         ContractsComponent,
         EditContractComponent,
         ContractsListComponent,
-        ViewContractComponent
+        ViewContractComponent,
+        StatusesComponent
     ],
     imports: [
         CommonModule,
@@ -38,8 +41,8 @@ import { ViewContractComponent } from './components/Contracts/view-contract/view
         ReactiveFormsModule,
         ChartsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
-            { path: 'home', component: HomeComponent },
+            { path: '', redirectTo: 'home', pathMatch: 'full', },
+            { path: 'home', component: HomeComponent, resolve: { statuses: StatusesResolver } },
             { path: 'add-contracts', component: ContractsComponent, resolve: { methods: MethodsResolver } },
             { path: 'contracts', component: ContractsListComponent, resolve: { contracts: ContractsResolver } },
             { path: 'edit-contract/:id', component: EditContractComponent, resolve: { contract: FindContractResolver, methods: MethodsResolver } },
@@ -54,7 +57,8 @@ import { ViewContractComponent } from './components/Contracts/view-contract/view
         ContractsResolver,
         MethodsHttpService,
         MethodsResolver,
-        FindContractResolver
+        FindContractResolver,
+        StatusesResolver
     ]
 })
 export class AppModuleShared {

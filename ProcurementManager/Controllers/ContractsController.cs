@@ -29,6 +29,7 @@ namespace ProcurementManager.Controllers
             x.Subject,
             x.ExpectedDate,
             x.DateSigned,
+            Percentage = x.ContractParameters.Where(t => t.IsCompleted).Sum(t => t.Percentage),
             count = x.ContractParameters.Count
         }).ToListAsync();
 
@@ -42,17 +43,20 @@ namespace ProcurementManager.Controllers
                 x.Concurrency,
                 x.Contractor,
                 x.ContractsID,
-                x.DateAdded,
-                x.DateSigned,
-                x.ExpectedDate,
+                DatteAddd = x.DateAdded.Date,
+                DateSigned = x.DateSigned.Date,
+                ExpectedDate = x.ExpectedDate.Date,
                 x.IsApproved,
                 x.IsCompleted,
                 x.IsFlexible,
                 x.MethodsID,
-                ContractParameters = x.ContractParameters.Select(t => new { t.Amount, t.Concurrency, t.ContractParameter, t.ContractParametersID, t.ContractsID, t.ExpectedDate, t.IsCompleted, t.Percentage }).OrderBy(y => y.ExpectedDate)
+                ContractParameters = x.ContractParameters.Select(t => new { t.Amount, t.Concurrency, t.ContractParameter, t.ContractParametersID, t.ContractsID, ExpectedDate = t.ExpectedDate.Date, t.IsCompleted, t.Percentage }).OrderBy(y => y.ExpectedDate)
             }).SingleOrDefaultAsync(x => x.ContractsID == id);
             return contract == null ? NotFound(new { Message = "Contract was not found" }) as IActionResult : Ok(contract);
         }
+
+        [HttpGet]
+        public async Task<IEnumerable> Statuses() => await new ApplicationDbContext(dco).Contracts.Select(x => new { x.Subject, Status = x.ContractParameters.Where(t => t.IsCompleted).Sum(t => t.Percentage) }).ToListAsync();
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Contracts contract)
@@ -81,10 +85,26 @@ namespace ProcurementManager.Controllers
                 db.UpdateRange(contract.ContractParameters);
                 await db.SaveChangesAsync();
             }
-            return Created($"/Contracts/Find?id={contract.ContractsID}", contract);
+            return Created($"/Contracts/Find?id={contract.ContractsID}", new { contract.MethodsID });
         }
 
-        [HttpDelete]
+        [HttpPut]
+        public async Task<IActionResult> Close([FromBody]Contracts contract)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { Error = "Invalid data was submitted", Message = ModelState.Values.First(x => x.Errors.Count > 0).Errors.Select(t => t.ErrorMessage).First() });
+            contract.IsCompleted = true;
+            contract.ContractParameters.ToList().ForEach(x => x.IsCompleted = true);
+            using (var db = new ApplicationDbContext(dco))
+            {
+                db.Entry(contract).State = EntityState.Modified;
+                db.UpdateRange(contract.ContractParameters);
+                await db.SaveChangesAsync();
+            }
+            return Created($"/Contracts/Find?id={contract.ContractsID}", new { contract.MethodsID });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Delete([FromBody]Contracts contract)
         {
             if (!ModelState.IsValid)

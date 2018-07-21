@@ -1,0 +1,13 @@
+﻿<h1 class="h1 text-lg-center">Projects statuses</h1>
+<div style="" *ngIf="statuses.length>0">
+    <canvas baseChart
+            [data]="polarAreaChartData"
+            [labels]="polarAreaChartLabels"
+            [legend]="polarAreaLegend"
+            [chartType]="polarAreaChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
+</div>
+<div *ngIf="statuses.length===0">
+    <span class="alert alert-info">First run. No contracts has been run. Add contracts to see them</span>
+</div>

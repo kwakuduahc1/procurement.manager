@@ -1,7 +1,10 @@
 ﻿import { Component } from '@angular/core';
-import { IContracts } from '../../../model/IContracts';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { IContractParameters } from '../../../model/IContractParameters';
+import { ConParamsHttp } from '../../../Http/cont-params-http';
+import { IHttpHelper } from '../../../model/HttpHelper';
+import { HttpErrorResponse } from '@angular/common/http';
+import { IContracts } from '../../../model/IContracts';
 
 @Component({
     selector: 'bs-view-contract',
@@ -9,16 +12,44 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
     styleUrls: ['./view-contract.component.css']
 })
 /** view-contract component*/
-export class ViewContractComponent {
+export class ViewContractComponent implements IHttpHelper<IContractParameters> {
+    processing: boolean = false;
+    error: boolean = false;
+    message: string = "";
     contract: IContracts;
-    form: FormGroup;
-    constructor(router: ActivatedRoute) {
-        this.contract = router.snapshot.data['contract'];
-        this.form = new FormBuilder().group({
-            contractParameter: ["", Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(150)])],
-            percentage: ["", Validators.compose([Validators.required, Validators.min(1), Validators.max(100)])],
-            amount: ["", Validators.compose([Validators.required, Validators.min(1)])],
-            expectedDate: ["", Validators.compose([Validators.required])]
-        })
+    constructor(private http: ConParamsHttp, route: ActivatedRoute) {
+        this.contract = route.snapshot.data['contract']
+    }
+
+    complete(par: IContractParameters) {
+        this.processing = true;
+        this.error = false;
+        if (confirm('Do you wish to mark this parameter as completed?')) {
+            this.http.edit(par).subscribe((res) => this.onSuccess(res), (err: HttpErrorResponse) => this.onError(err));
+        }
+        this.processing = false;
+    }
+
+    onError(err: HttpErrorResponse): void {
+        if (err.error!.message) {
+            this.message = err.error.message;
+        }
+        switch (err.status) {
+            case 500:
+                this.message = "A server error occurred. Contact support";
+                break;
+            case 400:
+                this.message = err.error!.message;
+                break;
+            default:
+                this.message = "An unexpected error occurred. Contact support";
+                break;
+
+        }
+        this.error = true;
+    }
+    onSuccess(t: IContractParameters): void {
+        let ix = this.contract.contractParameters.findIndex(x => x.contractParametersID == t.contractParametersID);
+        this.contract.contractParameters[ix] = t;
     }
 }
