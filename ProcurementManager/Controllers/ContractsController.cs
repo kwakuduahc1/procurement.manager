@@ -35,7 +35,22 @@ namespace ProcurementManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Find(string id)
         {
-            var contract = await new ApplicationDbContext(dco).Contracts.Select(x => new { x.Subject, x.Amount, x.Concurrency, x.Contractor, x.ContractsID, x.DateAdded, x.DateSigned, x.ExpectedDate, x.IsApproved, x.IsCompleted, x.IsFlexible, ContractParameters = x.ContractParameters.Select(t => new { t.Amount, t.Concurrency, t.ContractParameter, t.ContractParametersID, t.ContractsID, t.ExpectedDate, t.IsCompleted, t.Percentage }).OrderBy(y => y.ExpectedDate) }).SingleOrDefaultAsync(x => x.ContractsID == id);
+            var contract = await new ApplicationDbContext(dco).Contracts.Select(x => new
+            {
+                x.Subject,
+                x.Amount,
+                x.Concurrency,
+                x.Contractor,
+                x.ContractsID,
+                x.DateAdded,
+                x.DateSigned,
+                x.ExpectedDate,
+                x.IsApproved,
+                x.IsCompleted,
+                x.IsFlexible,
+                x.MethodsID,
+                ContractParameters = x.ContractParameters.Select(t => new { t.Amount, t.Concurrency, t.ContractParameter, t.ContractParametersID, t.ContractsID, t.ExpectedDate, t.IsCompleted, t.Percentage }).OrderBy(y => y.ExpectedDate)
+            }).SingleOrDefaultAsync(x => x.ContractsID == id);
             return contract == null ? NotFound(new { Message = "Contract was not found" }) as IActionResult : Ok(contract);
         }
 

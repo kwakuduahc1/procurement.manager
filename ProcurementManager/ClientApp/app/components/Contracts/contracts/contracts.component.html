@@ -60,7 +60,7 @@
                         id="methodsID"
                         title="Contract method"
                         formControlName="methodsID">
-                    <option *ngFor="let m of methods" [ngValue]="m.methodsID" class="dropdown-item" [label]="m.method"></option>
+                    <option *ngFor="let m of methods" [ngValue]="m.methodsID" class="dropdown-item">{{m.method}}</option>
                 </select>
             </div>
             <span [ngClass]="form.controls.methodsID.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.methodsID.errors?.required">Select a method</span>

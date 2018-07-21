@@ -7,6 +7,8 @@ import { IMethods } from '../../../model/IMethods';
 import { IHttpHelper } from '../../../model/HttpHelper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IContractParameters } from '../../../model/IContractParameters';
+import { DateTime } from 'luxon';
+import { DatePipe } from '@angular/common';
 @Component({
     selector: 'bs-edit-contract',
     templateUrl: './edit-contract.component.html',
@@ -24,21 +26,25 @@ export class EditContractComponent {
     constructor(private http: ContractsHttpService, fb: FormBuilder, route: ActivatedRoute) {
         this.methods = route.snapshot.data['methods'];
         this.contract = route.snapshot.data['contract'];
-        console.log(this.contract);
         this.form = fb.group({
             subject: [this.contract.subject, Validators.compose([Validators.required, Validators.maxLength(150), Validators.minLength(20)])],
             methodsID: [this.contract.methodsID, Validators.compose([Validators.required, Validators.min(1)])],
+            contractsID: [this.contract.contractsID],
             contractor: [this.contract.contractor, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
             amount: [this.contract.amount, Validators.compose([Validators.required, Validators.min(1)])],
             dateSigned: [this.contract.dateSigned, Validators.required],
-            expectedDate: [this.contract.expectedDate, Validators.required]
+            expectedDate: [this.contract.expectedDate],
+            concurrency: [this.contract.concurrency]
         });
         this.contract.contractParameters.forEach(x => {
             this.params.unshift(new FormBuilder().group({
                 contractParameter: [x.contractParameter, Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(150)])],
                 percentage: [x.percentage, Validators.compose([Validators.required, Validators.min(1), Validators.max(100)])],
                 amount: [x.amount, Validators.compose([Validators.required, Validators.min(1)])],
-                expectedDate: [x.expectedDate, Validators.compose([Validators.required])]
+                contractsID: [this.contract.contractsID],
+                contractParametersID: [x.contractParametersID],
+                concurrency: [x.concurrency],
+                expectedDate: [DateTime.fromSQL(x.expectedDate.toString()).toJSDate(), Validators.compose([Validators.required])]
             }))
         });
     }
@@ -92,8 +98,7 @@ export class EditContractComponent {
             contractParameter: x.controls['contractParameter'].value,
             expectedDate: x.controls['expectedDate'].value,
             isCompleted: false,
-            percentage: x.controls['percentage'].value,
-            contractsID: "my contract"
+            percentage: x.controls['percentage'].value
         } as IContractParameters));
         console.log(params);
         con.contractParameters = params;

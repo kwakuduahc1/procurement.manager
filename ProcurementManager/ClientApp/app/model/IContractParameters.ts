@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export interface IContractParameters {
     contractParametersID: number;
     contractParameter: string;
@@ -5,7 +7,7 @@ export interface IContractParameters {
     percentage: any;
     amount: number;
     isCompleted: boolean;
-    expectedDate: Date;
+    expectedDate: DateTime;
     concurrency: number[];
     subject: string;
 }

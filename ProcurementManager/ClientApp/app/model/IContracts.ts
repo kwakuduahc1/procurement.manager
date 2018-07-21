@@ -1,4 +1,5 @@
 import { IContractParameters } from "./IContractParameters";
+import { DateTime } from 'luxon';
 
 export interface IContracts {
     contractsID: string;
@@ -8,10 +9,10 @@ export interface IContracts {
     amount: number;
     isFlexible: boolean;
     isApproved: boolean;
-    dateSigned: Date;
+    dateSigned: DateTime;
     isExecuted: boolean;
-    expectedDate: Date;
-    dateAdded: Date;
+    expectedDate: DateTime;
+    dateAdded: DateTime;
     concurrency: any[];
     contractParameters: IContractParameters[];
     count: number;
