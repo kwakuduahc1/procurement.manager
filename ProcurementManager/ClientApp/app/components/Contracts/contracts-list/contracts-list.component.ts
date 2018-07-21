@@ -1,4 +1,7 @@
 ﻿import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ContractsHttpService } from '../../../Http/contracts-http';
+import { IContracts } from '../../../model/IContracts';
 
 @Component({
     selector: 'bs-contracts-list',
@@ -7,8 +10,9 @@
 })
 /** contracts-list component*/
 export class ContractsListComponent {
-    /** contracts-list ctor */
-    constructor() {
+    contracts: IContracts[];
 
+    constructor(route:ActivatedRoute, private http:ContractsHttpService) {
+        this.contracts = route.snapshot.data['contracts'];
     }
 }

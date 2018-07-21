@@ -18,6 +18,8 @@ import { ContractsListComponent } from './components/Contracts/contracts-list/co
 import { ContractsResolver } from './resolvers/contracts/ContractsResolver';
 import { MethodsHttpService } from './Http/methods-http';
 import { MethodsResolver } from './resolvers/methods/MethodsResolver';
+import { FindContractResolver } from './resolvers/contracts/FindContractResolver';
+import { ViewContractComponent } from './components/Contracts/view-contract/view-contract.component';
 
 @NgModule({
     declarations: [
@@ -26,7 +28,8 @@ import { MethodsResolver } from './resolvers/methods/MethodsResolver';
         HomeComponent,
         ContractsComponent,
         EditContractComponent,
-        ContractsListComponent
+        ContractsListComponent,
+        ViewContractComponent
     ],
     imports: [
         CommonModule,
@@ -37,7 +40,10 @@ import { MethodsResolver } from './resolvers/methods/MethodsResolver';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'contracts', component: ContractsComponent, resolve: { contracts: ContractsResolver, methods: MethodsResolver } },
+            { path: 'add-contracts', component: ContractsComponent, resolve: { methods: MethodsResolver } },
+            { path: 'contracts', component: ContractsListComponent, resolve: { contracts: ContractsResolver } },
+            { path: 'edit-contract/:id', component: EditContractComponent, resolve: { contract: FindContractResolver, methods: MethodsResolver } },
+            { path: 'view-contract/:id', component: ViewContractComponent, resolve: { contract: FindContractResolver } },
             { path: '**', redirectTo: 'home' }
         ])
     ],
@@ -47,7 +53,8 @@ import { MethodsResolver } from './resolvers/methods/MethodsResolver';
         ConParamsHttp,
         ContractsResolver,
         MethodsHttpService,
-        MethodsResolver
+        MethodsResolver,
+        FindContractResolver
     ]
 })
 export class AppModuleShared {

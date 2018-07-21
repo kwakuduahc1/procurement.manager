@@ -11,7 +11,7 @@ namespace ProcurementManager.Model
 
         [Required]
         [StringLength(150, MinimumLength = 10)]
-        public int ContractParameter { get; set; }
+        public string ContractParameter { get; set; }
 
         [Required]
         public string ContractsID { get; set; }

@@ -19,7 +19,7 @@ export class ContractsHttpService implements IHttpMethods<IContracts> {
     }
 
     edit(item: IContracts): Observable<IContracts> {
-        return this.http.post<IContracts>("/Contracts/Edit", item);
+        return this.http.put<IContracts>("/Contracts/Edit", item);
     }
 
     delete(item: IContracts): Observable<void> {

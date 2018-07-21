@@ -93,11 +93,90 @@
             </div>
             <span [ngClass]="form.controls.dateSigned.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.dateSigned.errors?.required">Date signed is required</span>
         </div>
-
-        <!-- Submit button -->
-        <div class="offset-md-2 btn-group">
-            <button [disabled]="form.invalid || processing" type="submit" [ngClass]="form.invalid ? 'btn-danger' : 'btn-success'" class="btn"><span class="glyphicon glyphicon-addition-sign"> Add Contract</span></button>
-        </div>
-        <div [ngClass]="error ? 'alert-danger' : 'alert-info'">{{message}}</div>
     </fieldset>
 </form>
+<h2 [hidden]="form.invalid">Add contract parameters. <span class="badge">{{params.length}}</span></h2>
+<div [hidden]="form.invalid" class="btn-group">
+    <button type="button" class="btn btn-outline-primary" (click)="addParam()" [disabled]="processing ||form.invalid">Add Parameter</button>
+</div>
+<!-- Parameter forms -->
+<form class="border" [hidden]="form.invalid" [ngClass]="f.valid ? 'border-success' : 'border-danger'" name="params_form" [formGroup]="f" id="params_form{{ix}}" *ngFor="let f of params;let ix= index">
+    <fieldset>
+        <legend>Contract parameter {{ix+1}}</legend>
+        <!-- Contract parameter description {{ix}} -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" aria-label="contractParameter" for="contractParameter">Parameter</label>
+            <div class="col-md-5" aria-labelledby="contractParameter" [ngClass]="f.controls.contractParameter?.errors ? 'has-error' : 'has-success'">
+                <input type="text"
+                       class="form-control"
+                       id="contractParameter{{ix}}"
+                       title="Parameter{{ix+1}} for {{form.controls.subject.value}}"
+                       formControlName="contractParameter"
+                       placeholder="Parameter{{ix+1}} for {{form.controls.subject.value}}">
+            </div>
+            <span [ngClass]="f.controls.contractParameter.errors?.maxlength ? 'text-danger' : ''" *ngIf="f.controls.contractParameter.errors?.maxlength">The maximum length is {{f.controls.contractParameter.errors.maxlength.requiredLength}} characters: Current is {{f.controls.contractParameter.errors.maxlength.actualLength}}</span>
+            <span [ngClass]="f.controls.contractParameter.errors?.required ? 'text-danger' : ''" *ngIf="f.controls.contractParameter.errors?.required">Enter parameter</span>
+            <span [ngClass]="f.controls.contractParameter.errors?.minlength ? 'text-danger' : ''" *ngIf="f.controls.contractParameter.errors?.minlength">The minimum length is {{f.controls.contractParameter.errors.minlength.requiredLength}}characters: Current is {{f.controls.contractParameter.errors.minlength.actualLength}}</span>
+        </div>
+
+        <!-- Contract Parameter amount {{ix}} -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="amount">Amount</label>
+            <div class="col-md-5" [ngClass]="form.controls.amount?.errors ? 'has-error' : 'has-success'">
+                <input type="number"
+                       class="form-control"
+                       id="amount{{ix}}"
+                       title="Amount at this stage"
+                       formControlName="amount"
+                       placeholder="Stage amount">
+            </div>
+            <span [ngClass]="f.controls.amount.errors?.max ? 'text-danger' : ''" *ngIf="f.controls.amount.errors?.max">The maximum  {{f.controls.amount.errors.max.max}}</span>
+            <span [ngClass]="f.controls.amount.errors?.required ? 'text-danger' : ''" *ngIf="f.controls.amount.errors?.required">Add stage amount</span>
+            <span [ngClass]="f.controls.amount.errors?.min ? 'text-danger' : ''" *ngIf="f.controls.amount.errors?.min">The minimum is {{f.controls.amount.errors.min.min}}</span>
+        </div>
+
+        <!-- Contract Parameter percentage {{ix}} -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="percentage">Percentage</label>
+            <div class="col-md-5" [ngClass]="form.controls.percentage?.errors ? 'has-error' : 'has-success'">
+                <input type="number"
+                       class="form-control"
+                       id="percentage{{ix}}"
+                       title="Amount at this stage"
+                       formControlName="percentage"
+                       placeholder="Stage percentage">
+            </div>
+            <span [ngClass]="f.controls.percentage.errors?.max ? 'text-danger' : ''" *ngIf="f.controls.percentage.errors?.max">The maximum  {{f.controls.percentage.errors.max.max}}</span>
+            <span [ngClass]="f.controls.percentage.errors?.required ? 'text-danger' : ''" *ngIf="f.controls.percentage.errors?.required">Add stage percentage</span>
+            <span [ngClass]="f.controls.percentage.errors?.min ? 'text-danger' : ''" *ngIf="f.controls.percentage.errors?.min">The minimum is {{f.controls.percentage.errors.min.min}}</span>
+        </div>
+
+        <!-- Contract Parameter Expected date of completion {{ix}} -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="expectedDate">Expected Date</label>
+            <div class="col-md-5" [ngClass]="form.controls.expectedDate?.errors ? 'has-error' : 'has-success'">
+                <input type="date"
+                       class="form-control"
+                       id="expectedDate{{ix}}"
+                       title="Date to be completed"
+                       formControlName="expectedDate"
+                       placeholder="Stage expected date">
+            </div>
+            <span [ngClass]="f.controls.expectedDate.errors?.required ? 'text-danger' : ''" *ngIf="f.controls.expectedDate.errors?.required">Add stage expected date</span>
+        </div>
+        <div class="offset-md-1">
+            <button class="btn btn-outline-warning" (click)="removeParam(ix)">Remove Parameter</button>
+        </div>
+    </fieldset>
+</form>
+<h3 [hidden]="isSafe()" class="text-warning">Error Messages</h3>
+<div class="row">
+    <div *ngIf="!checkSum()" class="alert alert-warning">The total parameter amount must be equal to the contract sum</div>
+    <div *ngIf="!checkPercentage()" class="alert alert-warning">Percentage total must be equal to 100</div>
+</div>
+<br />
+<br /><!-- Submit button -->
+<div class="row offset-md-2 btn-group">
+    <button (click)="add(form.value,params)" [disabled]="!areFormsvalid() || processing || !checkPercentage() || !checkSum()" type="submit" [ngClass]="!areFormsvalid() ? 'btn-danger' : 'btn-success'" class="btn"><span class="glyphicon glyphicon-addition-sign"> Add Contract</span></button>
+</div>
+<div class="alert" [ngClass]="error ? 'alert-danger' : 'alert-info'">{{message}}</div>
