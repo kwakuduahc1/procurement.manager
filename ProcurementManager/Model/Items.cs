@@ -6,7 +6,7 @@ namespace ProcurementManager.Model
     public class Items
     {
         [Key]
-        public int ItemsID { get; set; }
+        public short  ItemsID { get; set; }
 
         [Required]
         [StringLength(100)]

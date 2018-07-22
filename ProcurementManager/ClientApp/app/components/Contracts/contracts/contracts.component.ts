@@ -93,7 +93,6 @@ export class ContractsComponent implements IHttpHelper<IContracts> {
             percentage: x.controls['percentage'].value,
             contractsID: "my contract"
         } as IContractParameters));
-        console.log(params);
         con.contractParameters = params;
         this.http.add(con).subscribe(res => this.onSuccess(res), (err: HttpErrorResponse) => this.onError(err));
         this.processing = false;

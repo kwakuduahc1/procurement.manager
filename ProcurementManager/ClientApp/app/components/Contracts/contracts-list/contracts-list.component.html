@@ -7,7 +7,7 @@
         <div class="card-body" [routerLink]="['/view-contract',c.contractsID]">
             <div class="card-text row">
                 <div class="col-md-4 text-dark">Item</div>
-                <div class="col-md-6">{{c.item}}</div>
+                <div class="col-md-6">{{c.item}} : {{c.shortName}}</div>
             </div>
             <div class="card-text row">
                 <div class="col-md-4">Contractor</div>
@@ -27,7 +27,7 @@
             </div>
             <div class="card-text row">
                 <div class="col-md-4 text-dark">Source</div>
-                <div class="col-md-6">{{c.source}} : {{c.shortName}}</div>
+                <div class="col-md-6">{{c.source}}</div>
             </div>
         </div>
         <div class="btn-group">

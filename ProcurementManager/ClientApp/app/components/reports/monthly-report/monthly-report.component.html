@@ -1,1 +1,101 @@
-﻿<div style="border: 1px solid red">monthly-report Component</div>
+﻿<h2>Monthly Reports</h2>
+<form name="form" id="form" [formGroup]="form" (submit)="search(form.value)">
+    <fieldset>
+        <legend>Pick a month and year</legend>
+        <div class="form-group form-row">
+            <label class="col-form-label col-md-2" for="month">Month</label>
+            <div class="col-md-4">
+                <select class="form-control" name="month" id="month" formControlName="month">
+                    <option *ngFor="let m of months" [ngValue]="m.id">{{m.month}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group form-row">
+            <label class="col-form-label col-md-2" for="year">year</label>
+            <div class="col-md-4">
+                <select class="form-control" name="year" id="year" formControlName="year">
+                    <option *ngFor="let y of years" [ngValue]="y">{{y}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="btn-group offset-md-2">
+            <button type="submit" [disabled]="form.invalid ||processing" class="btn" [ngClass]="form.valid ? 'btn-success' :'btn-warning'">Generate</button>
+            <button class="btn btn-outline-primary" [disabled]="form.invalid ||processing" (click)="print()" type="button">Print</button>
+        </div>
+    </fieldset>
+</form>
+<div id="print">
+    <h2>Part A: Completed Contracts</h2>
+    <table class="table table-hover table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>Contract Number</th>
+                <th>Item</th>
+                <th>Subject</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Funding Source</th>
+                <th>Date Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cmp of report.completed">
+                <td>{{cmp.contractsID}}</td>
+                <td>{{cmp.item}}</td>
+                <td>{{cmp.subject}}</td>
+                <td>{{cmp.amount |currency:'GH¢'}}</td>
+                <td>{{cmp.method}}</td>
+                <td>{{cmp.source}}</td>
+                <td>{{cmp.dateCompleted |date}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Part B: New Contracts</h2>
+    <table class="table table-hover table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>Contract Number</th>
+                <th>Item</th>
+                <th>Subject</th>
+                <th>Date Signed</th>
+                <th>Method</th>
+                <th>Funding Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cmp of report.fresh">
+                <td>{{cmp.contractsID}}</td>
+                <td>{{cmp.item}}</td>
+                <td>{{cmp.subject}}</td>
+                <td>{{cmp.dateSigned |date}}</td>
+                <td>{{cmp.method}}</td>
+                <td>{{cmp.source}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Part B: Ongoing Contracts</h2>
+    <table class="table table-hover table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>Contract Number</th>
+                <th>Item</th>
+                <th>Subject</th>
+                <th>Progress</th>
+                <th>Method</th>
+                <th>Funding Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cmp of report.uncompleted">
+                <td>{{cmp.contractsID}}</td>
+                <td>{{cmp.item}}</td>
+                <td>{{cmp.subject}}</td>
+                <td>{{(cmp.progress/100) |percent}}</td>
+                <td>{{cmp.method}}</td>
+                <td>{{cmp.source}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

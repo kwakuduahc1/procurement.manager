@@ -15,13 +15,13 @@ namespace ProcurementManager.Controllers
         public ReportsController(DbContextOptions<ApplicationDbContext> options) => dco = options;
 
         [HttpGet]
-        public async Task<IActionResult> Monthly(DateTime period)
+        public async Task<IActionResult> Monthly(byte month, short year)
         {
             using (var db = new ApplicationDbContext(dco))
             {
-                var uncompleted = await db.Contracts.Where(x => !x.IsCompleted).Select(x => new { x.ContractsID, x.Subject, x.Methods.Method, x.DateSigned, x.Sources.Source, x.Items.Item, x.Amount }).ToListAsync();
-                var fresh = await db.Contracts.Where(x => x.DateSigned.Year == period.Year && x.DateSigned.Month == period.Date.Month).Select(x => new { x.ContractsID, x.Sources.Source, x.Items.Item, x.Subject, x.Contractor, x.DateSigned, x.Amount }).ToListAsync();
-                var completed = await db.Contracts.Where(x => x.DateSigned.Year == period.Year && x.DateSigned.Month == period.Date.Month && x.IsCompleted).Select(x => new { x.ContractsID, x.Subject, x.Sources.Source, x.Items.Item, x.Methods.Method, x.DateSigned, x.Amount, x.DateCompleted }).ToListAsync();
+                var uncompleted = await db.Contracts.Where(x => !x.IsCompleted).Select(x => new { x.ContractsID, x.Subject, x.Methods.Method, x.DateSigned, x.Sources.Source, x.Items.Item, x.Amount, progress = x.ContractParameters.Where(t => t.IsCompleted).Sum(t => t.Percentage) }).ToListAsync();
+                var fresh = await db.Contracts.Where(x => x.DateSigned.Year == year && x.DateSigned.Month == month).Select(x => new { x.ContractsID, x.Sources.Source, x.Methods.Method, x.Items.Item, x.Subject, x.Contractor, x.DateSigned, x.Amount }).ToListAsync();
+                var completed = await db.Contracts.Where(x => x.DateCompleted.Year == year && x.DateCompleted.Month == month).Select(x => new { x.ContractsID, x.Subject, x.Sources.Source, x.Items.Item, x.Methods.Method, x.DateSigned, x.Amount, x.DateCompleted }).ToListAsync();
                 return Ok(new { uncompleted, fresh, completed });
             }
         }

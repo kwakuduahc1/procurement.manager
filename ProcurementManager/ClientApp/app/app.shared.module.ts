@@ -29,6 +29,7 @@ import { SourcesResolver } from './resolvers/sources/SourcesResolver';
 import { SourcesHttpService } from './Http/sources-http';
 import { ItemsResolver } from './resolvers/items/ListResolver';
 import { ItemsHttpService } from './Http/items-http';
+import { ReportsHttpService } from './Http/reports-http';
 
 @NgModule({
     declarations: [
@@ -76,7 +77,8 @@ import { ItemsHttpService } from './Http/items-http';
         SourcesResolver,
         SourcesHttpService,
         ItemsResolver,
-        ItemsHttpService
+        ItemsHttpService,
+        ReportsHttpService
     ]
 })
 export class AppModuleShared {

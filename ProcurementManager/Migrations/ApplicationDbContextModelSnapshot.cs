@@ -81,8 +81,6 @@ namespace ProcurementManager.Migrations
 
                     b.Property<short>("ItemsID");
 
-                    b.Property<int?>("ItemsID1");
-
                     b.Property<short>("MethodsID");
 
                     b.Property<short>("SourcesID");
@@ -93,7 +91,7 @@ namespace ProcurementManager.Migrations
 
                     b.HasKey("ContractsID");
 
-                    b.HasIndex("ItemsID1");
+                    b.HasIndex("ItemsID");
 
                     b.HasIndex("MethodsID");
 
@@ -104,7 +102,7 @@ namespace ProcurementManager.Migrations
 
             modelBuilder.Entity("ProcurementManager.Model.Items", b =>
                 {
-                    b.Property<int>("ItemsID")
+                    b.Property<short>("ItemsID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<byte[]>("Concurrency")
@@ -124,9 +122,9 @@ namespace ProcurementManager.Migrations
                     b.ToTable("Items");
 
                     b.HasData(
-                        new { ItemsID = 1, Item = "Foodstuff", ShortName = "FDS" },
-                        new { ItemsID = 2, Item = "Electronics", ShortName = "ELT" },
-                        new { ItemsID = 3, Item = "Stationery", ShortName = "STN" }
+                        new { ItemsID = (short)1, Item = "Foodstuff", ShortName = "FDS" },
+                        new { ItemsID = (short)2, Item = "Electronics", ShortName = "ELT" },
+                        new { ItemsID = (short)3, Item = "Stationery", ShortName = "STN" }
                     );
                 });
 
@@ -217,14 +215,15 @@ namespace ProcurementManager.Migrations
                 {
                     b.HasOne("ProcurementManager.Model.Items", "Items")
                         .WithMany("Contracts")
-                        .HasForeignKey("ItemsID1");
+                        .HasForeignKey("ItemsID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProcurementManager.Model.Methods", "Methods")
                         .WithMany("Contracts")
                         .HasForeignKey("MethodsID")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ProcurementManager.Model.Sources")
+                    b.HasOne("ProcurementManager.Model.Sources", "Sources")
                         .WithMany("Contracts")
                         .HasForeignKey("SourcesID")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -50,17 +50,16 @@ namespace ProcurementManager.Context
             // Customize the ASP.NET Identity model and override the defaults if needed.// For example, you can rename the ASP.NET Identity table names and more.// Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public virtual DbSet<Contracts> Contracts { get; set; }
-
-        public virtual DbSet<ContractParameters> ContractParameters { get; set; }
-
-        public virtual DbSet<Methods> Methods { get; set; }
-
-        public virtual DbSet<Timelines> Timelines { get; set; }
-
         public virtual DbSet<Sources> Sources { get; set; }
         
         public virtual DbSet<Items> Items { get; set; }
 
+        public virtual DbSet<Methods> Methods { get; set; }
+
+        public virtual DbSet<Contracts> Contracts { get; set; }
+
+        public virtual DbSet<ContractParameters> ContractParameters { get; set; }
+
+        public virtual DbSet<Timelines> Timelines { get; set; }
     }
 }

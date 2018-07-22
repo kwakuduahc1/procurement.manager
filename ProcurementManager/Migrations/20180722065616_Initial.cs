@@ -11,7 +11,7 @@ namespace ProcurementManager.Migrations
                 name: "Items",
                 columns: table => new
                 {
-                    ItemsID = table.Column<int>(nullable: false)
+                    ItemsID = table.Column<short>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Item = table.Column<string>(maxLength: 100, nullable: false),
                     ShortName = table.Column<string>(maxLength: 5, nullable: false),
@@ -68,18 +68,17 @@ namespace ProcurementManager.Migrations
                     ExpectedDate = table.Column<DateTime>(nullable: false),
                     DateAdded = table.Column<DateTime>(nullable: false),
                     DateCompleted = table.Column<DateTime>(nullable: false),
-                    Concurrency = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    ItemsID1 = table.Column<int>(nullable: true)
+                    Concurrency = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contracts", x => x.ContractsID);
                     table.ForeignKey(
-                        name: "FK_Contracts_Items_ItemsID1",
-                        column: x => x.ItemsID1,
+                        name: "FK_Contracts_Items_ItemsID",
+                        column: x => x.ItemsID,
                         principalTable: "Items",
                         principalColumn: "ItemsID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Contracts_Methods_MethodsID",
                         column: x => x.MethodsID,
@@ -145,17 +144,17 @@ namespace ProcurementManager.Migrations
             migrationBuilder.InsertData(
                 table: "Items",
                 columns: new[] { "ItemsID", "Concurrency", "Item", "ShortName" },
-                values: new object[] { 1, null, "Foodstuff", "FDS" });
+                values: new object[] { (short)1, null, "Foodstuff", "FDS" });
 
             migrationBuilder.InsertData(
                 table: "Items",
                 columns: new[] { "ItemsID", "Concurrency", "Item", "ShortName" },
-                values: new object[] { 2, null, "Electronics", "ELT" });
+                values: new object[] { (short)2, null, "Electronics", "ELT" });
 
             migrationBuilder.InsertData(
                 table: "Items",
                 columns: new[] { "ItemsID", "Concurrency", "Item", "ShortName" },
-                values: new object[] { 3, null, "Stationery", "STN" });
+                values: new object[] { (short)3, null, "Stationery", "STN" });
 
             migrationBuilder.InsertData(
                 table: "Methods",
@@ -213,9 +212,9 @@ namespace ProcurementManager.Migrations
                 column: "ContractsID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contracts_ItemsID1",
+                name: "IX_Contracts_ItemsID",
                 table: "Contracts",
-                column: "ItemsID1");
+                column: "ItemsID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contracts_MethodsID",
