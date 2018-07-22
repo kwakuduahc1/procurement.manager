@@ -7,6 +7,8 @@ import { IMethods } from '../../../model/IMethods';
 import { IHttpHelper } from '../../../model/HttpHelper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IContractParameters } from '../../../model/IContractParameters';
+import { ISources } from '../../../model/ISources';
+import { IItems } from '../../../model/IItems';
 
 @Component({
     selector: 'bs-contracts',
@@ -21,15 +23,21 @@ export class ContractsComponent implements IHttpHelper<IContracts> {
     params: FormGroup[] = [];
     form: FormGroup;
     methods: IMethods[];
+    sources: ISources[];
+    items: IItems[];
     constructor(private http: ContractsHttpService, fb: FormBuilder, route: ActivatedRoute) {
         this.methods = route.snapshot.data['methods'];
+        this.sources = route.snapshot.data['sources'];
+        this.items = route.snapshot.data['items'];
         this.form = fb.group({
             subject: ["", Validators.compose([Validators.required, Validators.maxLength(150), Validators.minLength(20)])],
             methodsID: ["", Validators.compose([Validators.required, Validators.min(1)])],
             contractor: ["", Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(200)])],
             amount: ["", Validators.compose([Validators.required, Validators.min(1)])],
             dateSigned: ["", Validators.required],
-            expectedDate: ["", Validators.required]
+            expectedDate: ["", Validators.required],
+            itemsID: ["", Validators.compose([Validators.required, Validators.min(1)])],
+            sourcesID: ["", Validators.compose([Validators.required, Validators.min(1)])]
         });
         this.addParam();
     }

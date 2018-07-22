@@ -4,6 +4,21 @@
 <form class="" [formGroup]="form" name="form" id="form">
     <fieldset>
         <legend>Add new contract</legend>
+
+        <!-- Procurement item -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="itemsID" aria-label="Procurement item">Procurement item</label>
+            <div class="col-md-6" aria-labelledby="itemsID" [ngClass]="form.controls.itemsID?.errors ? 'has-error' : 'has-success'">
+                <select class="form-control"
+                        id="itemsID"
+                        title="Procurement item"
+                        formControlName="itemsID">
+                    <option *ngFor="let m of items" [ngValue]="m.itemsID" class="dropdown-item">{{m.item}} : {{m.shortName}}</option>
+                </select>
+            </div>
+            <span [ngClass]="form.controls.itemsID.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.itemsID.errors?.required">Select an item</span>
+        </div>
+
         <!-- Contract Subject -->
         <div class="form-group row">
             <label class="col-md-2 col-form-label" aria-label="" for="subject">Subject</label>
@@ -64,6 +79,20 @@
                 </select>
             </div>
             <span [ngClass]="form.controls.methodsID.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.methodsID.errors?.required">Select a method</span>
+        </div>
+
+        <!-- Funding source -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="sourcesID" aria-label="Procurement method">Funding Source</label>
+            <div class="col-md-6" aria-labelledby="sourcesID" [ngClass]="form.controls.sourcesID?.errors ? 'has-error' : 'has-success'">
+                <select class="form-control"
+                        id="sourcesID"
+                        title="Funding source"
+                        formControlName="sourcesID">
+                    <option *ngFor="let m of sources" [ngValue]="m.sourcesID" class="dropdown-item">{{m.source}}</option>
+                </select>
+            </div>
+            <span [ngClass]="form.controls.sourcesID.errors?.required ? 'text-danger' : ''" *ngIf="form.controls.sourcesID.errors?.required">Select a source</span>
         </div>
 
         <!-- Expected Contract Date -->

@@ -42,7 +42,7 @@ namespace ProcurementManager.Model
         public DateTime DateSigned { get; set; }
 
         [DefaultValue(false)]
-        public bool IsCompleted{ get; set; }
+        public bool IsCompleted { get; set; }
 
         [Required]
         public DateTime ExpectedDate { get; set; }
@@ -59,5 +59,7 @@ namespace ProcurementManager.Model
         public virtual Methods Methods { get; set; }
 
         public virtual Items Items { get; set; }
+
+        public virtual Sources Sources { get; set; }
     }
 }

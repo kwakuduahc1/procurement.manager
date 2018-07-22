@@ -19,9 +19,9 @@ namespace ProcurementManager.Controllers
         {
             using (var db = new ApplicationDbContext(dco))
             {
-                var uncompleted = await db.Contracts.Where(x => !x.IsCompleted).Select(x => new { x.ContractsID, x.Subject, x.Methods.Method, x.DateSigned, x.Amount }).ToListAsync();
-                var fresh = await db.Contracts.Where(x => x.DateSigned.Year == period.Year && x.DateSigned.Month == period.Date.Month).Select(x => new { x.ContractsID, x.Subject, x.Contractor, x.DateSigned, x.Amount }).ToListAsync();
-                var completed = await db.Contracts.Where(x => x.DateSigned.Year == period.Year && x.DateSigned.Month == period.Date.Month && x.IsCompleted).Select(x => new { x.ContractsID, x.Subject, x.Methods.Method, x.DateSigned, x.Amount, x.DateCompleted }).ToListAsync();
+                var uncompleted = await db.Contracts.Where(x => !x.IsCompleted).Select(x => new { x.ContractsID, x.Subject, x.Methods.Method, x.DateSigned, x.Sources.Source, x.Items.Item, x.Amount }).ToListAsync();
+                var fresh = await db.Contracts.Where(x => x.DateSigned.Year == period.Year && x.DateSigned.Month == period.Date.Month).Select(x => new { x.ContractsID, x.Sources.Source, x.Items.Item, x.Subject, x.Contractor, x.DateSigned, x.Amount }).ToListAsync();
+                var completed = await db.Contracts.Where(x => x.DateSigned.Year == period.Year && x.DateSigned.Month == period.Date.Month && x.IsCompleted).Select(x => new { x.ContractsID, x.Subject, x.Sources.Source, x.Items.Item, x.Methods.Method, x.DateSigned, x.Amount, x.DateCompleted }).ToListAsync();
                 return Ok(new { uncompleted, fresh, completed });
             }
         }

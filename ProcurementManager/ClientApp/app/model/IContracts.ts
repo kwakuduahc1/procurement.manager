@@ -17,4 +17,9 @@ export interface IContracts {
     contractParameters: IContractParameters[];
     count: number;
     percentage: number;
+    source: number;
+    sourcesID: string;
+    itemsID: number;
+    item: string;
+    shortName: string;
 }

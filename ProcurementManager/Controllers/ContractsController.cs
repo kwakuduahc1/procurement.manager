@@ -16,21 +16,27 @@ namespace ProcurementManager.Controllers
         public ContractsController(DbContextOptions<ApplicationDbContext> options) => dco = options;
 
         [HttpGet]
-        public async Task<IEnumerable> List() => await new ApplicationDbContext(dco).Contracts.Where(x => !x.IsCompleted).Select(x => new
-        {
-            x.Amount,
-            x.Concurrency,
-            x.Contractor,
-            x.ContractParameters,
-            x.ContractsID,
-            x.Methods.Method,
-            x.MethodsID,
-            x.Subject,
-            x.ExpectedDate,
-            x.DateSigned,
-            Percentage = x.ContractParameters.Where(t => t.IsCompleted).Sum(t => t.Percentage),
-            count = x.ContractParameters.Count
-        }).ToListAsync();
+        public async Task<IEnumerable> List() => await new ApplicationDbContext(dco).Contracts.Where(x => !x.IsCompleted)
+            .Select(x => new
+            {
+                x.Amount,
+                x.Concurrency,
+                x.Contractor,
+                x.ContractParameters,
+                x.ContractsID,
+                x.Methods.Method,
+                x.MethodsID,
+                x.Subject,
+                x.SourcesID,
+                x.Sources.Source,
+                x.ItemsID,
+                x.Items.Item,
+                x.Items.ShortName,
+                x.ExpectedDate,
+                x.DateSigned,
+                Percentage = x.ContractParameters.Where(t => t.IsCompleted).Sum(t => t.Percentage),
+                count = x.ContractParameters.Count
+            }).ToListAsync();
 
         [HttpGet]
         public async Task<IActionResult> Find(string id)
@@ -42,6 +48,11 @@ namespace ProcurementManager.Controllers
                 x.Concurrency,
                 x.Contractor,
                 x.ContractsID,
+                x.SourcesID,
+                x.Sources.Source,
+                x.ItemsID,
+                x.Items.Item,
+                x.Items.ShortName,
                 DatteAddd = x.DateAdded.Date,
                 DateSigned = x.DateSigned.Date,
                 ExpectedDate = x.ExpectedDate.Date,
@@ -49,7 +60,17 @@ namespace ProcurementManager.Controllers
                 x.IsCompleted,
                 x.IsFlexible,
                 x.MethodsID,
-                ContractParameters = x.ContractParameters.Select(t => new { t.Amount, t.Concurrency, t.ContractParameter, t.ContractParametersID, t.ContractsID, ExpectedDate = t.ExpectedDate.Date, t.IsCompleted, t.Percentage }).OrderBy(y => y.ExpectedDate)
+                ContractParameters = x.ContractParameters.Select(t => new
+                {
+                    t.Amount,
+                    t.Concurrency,
+                    t.ContractParameter,
+                    t.ContractParametersID,
+                    t.ContractsID,
+                    ExpectedDate = t.ExpectedDate.Date,
+                    t.IsCompleted,
+                    t.Percentage
+                }).OrderBy(y => y.ExpectedDate)
             }).SingleOrDefaultAsync(x => x.ContractsID == id);
             return contract == null ? NotFound(new { Message = "Contract was not found" }) as IActionResult : Ok(contract);
         }

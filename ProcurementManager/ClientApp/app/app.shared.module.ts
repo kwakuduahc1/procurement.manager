@@ -25,6 +25,10 @@ import { StatusesResolver } from './resolvers/contracts/StatusesResolver';
 import { ReportsHomeComponent } from './components/reports/reports-home/reports-home.component';
 import { MonthlyReportComponent } from './components/reports/monthly-report/monthly-report.component';
 import { PrintProviderService } from './provider/print-provider.service';
+import { SourcesResolver } from './resolvers/sources/SourcesResolver';
+import { SourcesHttpService } from './Http/sources-http';
+import { ItemsResolver } from './resolvers/items/ListResolver';
+import { ItemsHttpService } from './Http/items-http';
 
 @NgModule({
     declarations: [
@@ -48,7 +52,7 @@ import { PrintProviderService } from './provider/print-provider.service';
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full', },
             { path: 'home', component: HomeComponent, resolve: { statuses: StatusesResolver } },
-            { path: 'add-contracts', component: ContractsComponent, resolve: { methods: MethodsResolver } },
+            { path: 'add-contracts', component: ContractsComponent, resolve: { methods: MethodsResolver, sources: SourcesResolver, items: ItemsResolver } },
             { path: 'contracts', component: ContractsListComponent, resolve: { contracts: ContractsResolver } },
             { path: 'edit-contract/:id', component: EditContractComponent, resolve: { contract: FindContractResolver, methods: MethodsResolver } },
             { path: 'view-contract/:id', component: ViewContractComponent, resolve: { contract: FindContractResolver } },
@@ -68,7 +72,11 @@ import { PrintProviderService } from './provider/print-provider.service';
         MethodsResolver,
         FindContractResolver,
         StatusesResolver,
-        PrintProviderService
+        PrintProviderService,
+        SourcesResolver,
+        SourcesHttpService,
+        ItemsResolver,
+        ItemsHttpService
     ]
 })
 export class AppModuleShared {

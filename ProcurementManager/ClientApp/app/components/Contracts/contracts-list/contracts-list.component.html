@@ -6,6 +6,10 @@
         <div class="card-header">{{c.subject}}<span class="badge">{{(c.percentage/100) |percent}}</span> <a class="float-right" [routerLink]="['/edit-contract',c.contractsID]">Edit</a></div>
         <div class="card-body" [routerLink]="['/view-contract',c.contractsID]">
             <div class="card-text row">
+                <div class="col-md-4 text-dark">Item</div>
+                <div class="col-md-6">{{c.item}}</div>
+            </div>
+            <div class="card-text row">
                 <div class="col-md-4">Contractor</div>
                 <div class="col-md-6">{{c.contractor}}</div>
             </div>
@@ -20,6 +24,10 @@
             <div class="card-text row">
                 <div class="col-md-4 text-dark">Signed</div>
                 <div class="col-md-6">{{c.dateSigned |date}}</div>
+            </div>
+            <div class="card-text row">
+                <div class="col-md-4 text-dark">Source</div>
+                <div class="col-md-6">{{c.source}} : {{c.shortName}}</div>
             </div>
         </div>
         <div class="btn-group">
