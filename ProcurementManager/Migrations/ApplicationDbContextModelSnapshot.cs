@@ -79,7 +79,13 @@ namespace ProcurementManager.Migrations
 
                     b.Property<bool>("IsFlexible");
 
+                    b.Property<short>("ItemsID");
+
+                    b.Property<int?>("ItemsID1");
+
                     b.Property<short>("MethodsID");
+
+                    b.Property<short>("SourcesID");
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -87,9 +93,41 @@ namespace ProcurementManager.Migrations
 
                     b.HasKey("ContractsID");
 
+                    b.HasIndex("ItemsID1");
+
                     b.HasIndex("MethodsID");
 
+                    b.HasIndex("SourcesID");
+
                     b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("ProcurementManager.Model.Items", b =>
+                {
+                    b.Property<int>("ItemsID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("Concurrency")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Item")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(5);
+
+                    b.HasKey("ItemsID");
+
+                    b.ToTable("Items");
+
+                    b.HasData(
+                        new { ItemsID = 1, Item = "Foodstuff", ShortName = "FDS" },
+                        new { ItemsID = 2, Item = "Electronics", ShortName = "ELT" },
+                        new { ItemsID = 3, Item = "Stationery", ShortName = "STN" }
+                    );
                 });
 
             modelBuilder.Entity("ProcurementManager.Model.Methods", b =>
@@ -117,6 +155,30 @@ namespace ProcurementManager.Migrations
                         new { MethodsID = (short)5, Method = "Restrictive Tendering" },
                         new { MethodsID = (short)6, Method = "International Competitive Tendering" },
                         new { MethodsID = (short)7, Method = "Price quotation" }
+                    );
+                });
+
+            modelBuilder.Entity("ProcurementManager.Model.Sources", b =>
+                {
+                    b.Property<short>("SourcesID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("Concurrency")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("SourcesID");
+
+                    b.ToTable("Sources");
+
+                    b.HasData(
+                        new { SourcesID = (short)1, Source = "IGF" },
+                        new { SourcesID = (short)2, Source = "District Assembly" },
+                        new { SourcesID = (short)3, Source = "Grants and Loans" }
                     );
                 });
 
@@ -153,9 +215,18 @@ namespace ProcurementManager.Migrations
 
             modelBuilder.Entity("ProcurementManager.Model.Contracts", b =>
                 {
+                    b.HasOne("ProcurementManager.Model.Items", "Items")
+                        .WithMany("Contracts")
+                        .HasForeignKey("ItemsID1");
+
                     b.HasOne("ProcurementManager.Model.Methods", "Methods")
                         .WithMany("Contracts")
                         .HasForeignKey("MethodsID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProcurementManager.Model.Sources")
+                        .WithMany("Contracts")
+                        .HasForeignKey("SourcesID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

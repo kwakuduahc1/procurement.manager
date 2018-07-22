@@ -1,0 +1,20 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace ProcurementManager.Model
+{
+    public class Sources
+    {
+        [Key]
+        public short SourcesID { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Source { get; set; }
+
+        [Timestamp]
+        public byte[] Concurrency { get; set; }
+
+        public virtual ICollection<Contracts> Contracts { get; set; }
+    }
+}

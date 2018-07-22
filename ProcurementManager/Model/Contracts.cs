@@ -11,6 +11,12 @@ namespace ProcurementManager.Model
         [StringLength(30, MinimumLength = 10)]
         public string ContractsID { get; set; }
 
+        [Required]
+        public short ItemsID { get; set; }
+
+        [Required]
+        public short SourcesID { get; set; }
+
         [StringLength(150, MinimumLength = 20)]
         [Required]
         public string Subject { get; set; }
@@ -51,5 +57,7 @@ namespace ProcurementManager.Model
         public virtual ICollection<ContractParameters> ContractParameters { get; set; }
 
         public virtual Methods Methods { get; set; }
+
+        public virtual Items Items { get; set; }
     }
 }
