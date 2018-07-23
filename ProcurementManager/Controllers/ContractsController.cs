@@ -69,8 +69,9 @@ namespace ProcurementManager.Controllers
                     t.ContractsID,
                     ExpectedDate = t.ExpectedDate.Date,
                     t.IsCompleted,
+                    t.DateCompleted,
                     t.Percentage
-                }).OrderBy(y => y.ExpectedDate)
+                }).OrderBy(y => y.IsCompleted).ThenBy(f => f.DateCompleted).ThenBy(y => y.ExpectedDate)
             }).SingleOrDefaultAsync(x => x.ContractsID == id);
             return contract == null ? NotFound(new { Message = "Contract was not found" }) as IActionResult : Ok(contract);
         }
@@ -85,8 +86,8 @@ namespace ProcurementManager.Controllers
                 return BadRequest(new { Error = "Invalid data was submitted", Message = ModelState.Values.First(x => x.Errors.Count > 0).Errors.Select(t => t.ErrorMessage).First() });
             using (var db = new ApplicationDbContext(dco))
             {
-                int count = await db.Contracts.CountAsync();
-                contract.ContractsID = $"COHAS/PROC/{count++}";
+                var items = await db.Items.Where(x => x.ItemsID == contract.ItemsID).ToListAsync();
+                contract.ContractsID = $"COHAS/{items.First().ShortName}/{items.Count + 1}";
                 contract.DateAdded = DateTime.Now;
                 db.Add(contract);
                 await db.SaveChangesAsync();

@@ -30,6 +30,8 @@ import { SourcesHttpService } from './Http/sources-http';
 import { ItemsResolver } from './resolvers/items/ListResolver';
 import { ItemsHttpService } from './Http/items-http';
 import { ReportsHttpService } from './Http/reports-http';
+import { DefaultingComponent } from './components/reports/defaulting/defaulting.component';
+import { DefaultingResolver } from './resolvers/reports/DefaultingResolver';
 
 @NgModule({
     declarations: [
@@ -42,7 +44,8 @@ import { ReportsHttpService } from './Http/reports-http';
         ViewContractComponent,
         StatusesComponent,
         ReportsHomeComponent,
-        MonthlyReportComponent
+        MonthlyReportComponent,
+        DefaultingComponent
     ],
     imports: [
         CommonModule,
@@ -59,7 +62,9 @@ import { ReportsHttpService } from './Http/reports-http';
             { path: 'view-contract/:id', component: ViewContractComponent, resolve: { contract: FindContractResolver } },
             {
                 path: 'reports-home', component: ReportsHomeComponent, children: [
-                    { path: 'monthly', component: MonthlyReportComponent }]
+                    { path: 'monthly', component: MonthlyReportComponent },
+                    { path: 'defaultings', component: DefaultingComponent, resolve: { defaults: DefaultingResolver } }
+                ]
             },
             { path: '**', redirectTo: 'home' }
         ])
@@ -78,7 +83,8 @@ import { ReportsHttpService } from './Http/reports-http';
         SourcesHttpService,
         ItemsResolver,
         ItemsHttpService,
-        ReportsHttpService
+        ReportsHttpService,
+        DefaultingResolver
     ]
 })
 export class AppModuleShared {

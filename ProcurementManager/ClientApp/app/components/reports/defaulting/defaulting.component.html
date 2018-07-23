@@ -1,0 +1,25 @@
+﻿<h1>List of contracts past due date</h1>
+<table class="table table-hover table-striped table-dark table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th>Date Signed</th>
+            <th>Item</th>
+            <th>Contract Number</th>
+            <th>Method</th>
+            <th>Source</th>
+            <th>Subject</th>
+            <th>Expected Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let d of defaultings">
+            <td>{{d.dateSigned |date}}</td>
+            <td>{{d.item}}</td>
+            <td><a class="page-link" [routerLink]="['/view-contract',d.contractsID]">{{d.contractsID}}</a></td>
+            <td>{{d.method}}</td>
+            <td>{{d.source}}</td>
+            <td>{{d.subject}}</td>
+            <td>{{d.expectedDate |date}}</td>
+        </tr>
+    </tbody>
+</table>
