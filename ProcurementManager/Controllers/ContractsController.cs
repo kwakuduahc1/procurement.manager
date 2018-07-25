@@ -77,6 +77,26 @@ namespace ProcurementManager.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Search(string id)
+        {
+            var contract = await new ApplicationDbContext(dco).Contracts.Where(x => x.Subject.Contains(id)).Select(x => new
+            {
+                x.Subject,
+                x.Amount,
+                x.Contractor,
+                x.ContractsID,
+                x.Sources.Source,
+                x.Items.Item,
+                DateSigned = x.DateSigned.Date,
+                ExpectedDate = x.ExpectedDate.Date,
+                x.IsApproved,
+                x.IsCompleted,
+                x.Methods.Method
+            }).ToListAsync();
+            return contract == null ? NotFound() as IActionResult : Ok(contract);
+        }
+
+        [HttpGet]
         public async Task<IEnumerable> Statuses() => await new ApplicationDbContext(dco).Contracts.Select(x => new { x.Subject, Status = x.ContractParameters.Where(t => t.IsCompleted).Sum(t => t.Percentage) }).ToListAsync();
 
         [HttpPost]

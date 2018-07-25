@@ -23,6 +23,10 @@ export class ContractsHttpService implements IHttpMethods<IContracts> {
         return this.http.post<IContracts>("/Contracts/Create", item);
     }
 
+    search(id: string): Observable<IContracts[]> {
+        return this.http.get<IContracts[]>(`/Contracts/Search?id=${id}`);
+    }
+
     edit(item: IContracts): Observable<IContracts> {
         return this.http.put<IContracts>("/Contracts/Edit", item);
     }

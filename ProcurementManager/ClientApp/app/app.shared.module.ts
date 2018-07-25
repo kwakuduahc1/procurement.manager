@@ -32,6 +32,10 @@ import { ItemsHttpService } from './Http/items-http';
 import { ReportsHttpService } from './Http/reports-http';
 import { DefaultingComponent } from './components/reports/defaulting/defaulting.component';
 import { DefaultingResolver } from './resolvers/reports/DefaultingResolver';
+import { SearchComponent } from './components/Contracts/search/search.component';
+import { SearchService } from './services/SearchService';
+import { SearchResultsComponent } from './components/Contracts/search-results/search-results.component';
+
 
 @NgModule({
     declarations: [
@@ -45,7 +49,9 @@ import { DefaultingResolver } from './resolvers/reports/DefaultingResolver';
         StatusesComponent,
         ReportsHomeComponent,
         MonthlyReportComponent,
-        DefaultingComponent
+        DefaultingComponent,
+        SearchComponent,
+        SearchResultsComponent
     ],
     imports: [
         CommonModule,
@@ -58,6 +64,7 @@ import { DefaultingResolver } from './resolvers/reports/DefaultingResolver';
             { path: 'home', component: HomeComponent, resolve: { statuses: StatusesResolver } },
             { path: 'add-contracts', component: ContractsComponent, resolve: { methods: MethodsResolver, sources: SourcesResolver, items: ItemsResolver } },
             { path: 'contracts', component: ContractsListComponent, resolve: { contracts: ContractsResolver } },
+            { path: 'search-contracts', component: SearchResultsComponent },
             { path: 'edit-contract/:id', component: EditContractComponent, resolve: { contract: FindContractResolver, methods: MethodsResolver } },
             { path: 'view-contract/:id', component: ViewContractComponent, resolve: { contract: FindContractResolver } },
             {
@@ -84,7 +91,8 @@ import { DefaultingResolver } from './resolvers/reports/DefaultingResolver';
         ItemsResolver,
         ItemsHttpService,
         ReportsHttpService,
-        DefaultingResolver
+        DefaultingResolver,
+        SearchService
     ]
 })
 export class AppModuleShared {
