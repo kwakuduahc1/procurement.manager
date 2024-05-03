@@ -100,11 +100,16 @@ namespace ProcurementManagerUltimate.Controllers
             return base.Ok(new { uncompleted, fresh, completed });
         }
 
-        [HttpGet("{month}")]
-        public async Task<IActionResult> Monthly(byte month)
+        [HttpGet("{date}")]
+        public async Task<IActionResult> Monthly(DateTime date)
         {
+            //string unc_qry = @"select c.Reference reference, c.Subject subject, m.Method method, strftime('%Y-%m-%d', c.DateSigned) datesigned, s.Source source, c.Amount amount
+            //                from Contracts c
+            //                inner join Methods m on m.MethodsID = c.MethodsID
+            //                inner join Sources s on s.SourcesID = c.SourcesID
+            //                where c.IsCompleted = 0 and strftime('%Y', c.DateSigned) = @year and strftime('%m', c.DateSigned) = @month";
             var uncompleted = await db.Contracts
-                .Where(x => !x.IsCompleted && x.DateSigned.Month <= month)
+                .Where(x => !x.IsCompleted && x.DateSigned.Month <= date.Month && x.DateSigned.Year.ToString() == date.Year.ToString())
                 .Select(x => new
                 {
                     x.Reference,
@@ -116,7 +121,7 @@ namespace ProcurementManagerUltimate.Controllers
                 }).Distinct().ToListAsync();
 
             var fresh = await db.Contracts
-                .Where(x => !x.IsCompleted && x.DateSigned.Year == DateTime.UtcNow.Year && x.DateSigned.Month == month)
+                .Where(x => !x.IsCompleted && x.DateSigned.Year.ToString() == date.Year.ToString() && x.DateSigned.Month.ToString() == date.Month.ToString())
                 .Select(x => new
                 {
                     x.ContractsID,
@@ -134,7 +139,7 @@ namespace ProcurementManagerUltimate.Controllers
                 .ToListAsync();
 
             var completed = await db.Contracts
-                .Where(x => x.IsCompleted && x.DateCompleted.Year == DateTime.UtcNow.Year && x.DateCompleted.Month == month)
+                .Where(x => x.IsCompleted && x.DateCompleted.Year.ToString() == DateTime.UtcNow.Year.ToString() && x.DateCompleted.Month.ToString() == date.Month.ToString())
                 .OrderBy(t => t.DateCompleted)
                 .Select(x => new
                 {
@@ -150,7 +155,7 @@ namespace ProcurementManagerUltimate.Controllers
                 .ToListAsync();
 
             var minor = await db.Contracts
-                .Where(x => x.IsMinor && x.DateSigned.Month >= month)
+                .Where(x => x.IsMinor && x.DateSigned.Month.ToString() == date.Month.ToString() && x.DateSigned.Year.ToString() == date.Year.ToString())
                 .Select(x => new
                 {
                     x.Reference,
@@ -169,9 +174,9 @@ namespace ProcurementManagerUltimate.Controllers
                 inner join Contracts c on c.Reference = p.Reference
                 inner join Suppliers s on s.SupplierID = c.SuppliersID
                 where strftime('%m', p.DateCompleted) = @month and strftime('%Y',p.DateCompleted) = strftime('%Y', 'now')
-                group by c.reference, c.Subject, supplier, date(p.DateCompleted), date(c.DateSigned)", param: new { month});
+                group by c.reference, c.Subject, supplier, date(p.DateCompleted), date(c.DateSigned)", param: new { month = date.Month, year = date.Year });
 
-            return base.Ok(new { uncompleted, fresh, completed });
+            return base.Ok(new { uncompleted, fresh, completed, payments, minor });
         }
 
         //[HttpGet("{Defaulting}")]

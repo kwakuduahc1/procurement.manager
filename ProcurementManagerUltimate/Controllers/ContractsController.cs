@@ -22,11 +22,12 @@ namespace ProcurementManagerUltimate.Controllers
         [HttpGet]
         public async Task<IEnumerable> List()
         {
-            var qry = @"select c.'reference' 'reference' , c.subject 'subject', sum(c.amount) amount, count(c.ItemsID) quantity, 
-                        (select ifnull(sum(Percentage), 0) from ContractParameters where IsCompleted = 1) progress
+            var qry = @"select c.subject 'subject', sum(c.amount) amount, count(c.ItemsID) quantity, c.Receipt receipt,
+                        (select ifnull(sum(Percentage), 0) 
+                        from ContractParameters where IsCompleted = 1) progress
                         from Contracts c
                         where c.IsCompleted = 0
-                        group by c.Reference, c.Subject";
+                        group by c.Subject, c.Receipt";
             return await db.Database.GetDbConnection().QueryAsync(qry);
         }
 
@@ -45,13 +46,14 @@ namespace ProcurementManagerUltimate.Controllers
                                x.IsCompleted isCompleted,
                                m.Method method,
                                x.Quantity quantity,
-                               x.Reference reference
+                               x.Reference reference,
+                               x.Receipt receipt
                         from Contracts x
                         inner join Methods m on m.MethodsID = x.MethodsID
                         inner join Items i on i.ItemsID = x.ItemsID
                         inner join Sources s on s.SourcesID = x.SourcesID
                         inner join Suppliers sp on sp.SupplierID = x.SuppliersID
-                         where x.reference = @id", param: new { id });
+                         where x.receipt = @id", param: new { id });
             return cons == null ? NotFound(new { Message = "Contract was not found" }) : Ok(cons);
         }
 
@@ -81,16 +83,17 @@ namespace ProcurementManagerUltimate.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(List<Contracts> contracts)
         {
-            if (await db.Contracts.AnyAsync(x => x.Reference == contracts[0].Reference))
-                return BadRequest(new { Message = $"The ID: {contracts[0].Reference} has previously been used" });
             var date = DateTime.UtcNow;
             var num = await db.Contracts.CountAsync(x => x.DateSigned.Year == date.Year) + 1;
             foreach (var con in contracts)
             {
+                if (await db.Contracts.AnyAsync(x => x.Reference == con.Reference))
+                    return BadRequest(new { Message = $"The ID: {contracts[0].Reference} has previously been used" });
                 con.DateAdded = DateTime.Now;
                 con.IsApproved = true;
                 con.IsCompleted = false;
                 con.IsFlexible = true;
+                con.Receipt = $"{date.Year}-{date.Month}-{num}";
                 db.Add(con);
             }
             await db.SaveChangesAsync();

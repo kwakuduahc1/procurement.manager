@@ -59,6 +59,9 @@ namespace ProcurementManagerUltimate.Model
 
         public DateTime DateCompleted { get; set; }
 
+        [StringLength(30, MinimumLength =5)]
+        public string Receipt { get; set; }
+
         //[Timestamp, ConcurrencyCheck]
         //public byte[] Concurrency { get; set; }
 
